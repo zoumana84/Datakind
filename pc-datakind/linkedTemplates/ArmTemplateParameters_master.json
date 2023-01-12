@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "pc-datakind"
 		},
+		"ls_injectionsa_connectionString": {
+			"value": ""
+		},
 		"ls_humdata_properties_typeProperties_url": {
 			"value": "https://data.humdata.org/dataset/"
 		},

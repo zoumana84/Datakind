@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "pc-datakind"
 		},
+		"ls_injectionsa_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_injectionsa'"
+		},
 		"ls_humdata_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://data.humdata.org/dataset/"
@@ -37,6 +41,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_injectionsa_connectionString": {
+						"value": "[parameters('ls_injectionsa_connectionString')]"
 					},
 					"ls_humdata_properties_typeProperties_url": {
 						"value": "[parameters('ls_humdata_properties_typeProperties_url')]"
