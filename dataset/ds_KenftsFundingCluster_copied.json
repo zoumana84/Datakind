@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "KenFoodPrice",
+				"fileName": "KenftsFundingCluster",
 				"folderPath": "copied",
 				"container": "datakind"
 			},
