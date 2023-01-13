@@ -1,0 +1,23 @@
+{
+	"name": "ds_KenFoodPrices_pqtarget",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_injectionsa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "pqtarget",
+				"container": "datakind"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
