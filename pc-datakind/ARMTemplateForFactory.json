@@ -677,14 +677,7 @@
 								"datasetParameters": {
 									"source1": {},
 									"sink1": {
-										"tableName": "datakindtable"
-									}
-								},
-								"linkedServiceParameters": {
-									"sink1": {
-										"schemaLinkedService": {
-											"tableName": "datakindtable"
-										}
+										"tableName": "kenftsfundingcluster"
 									}
 								}
 							},
@@ -1056,7 +1049,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "KenFoodPrice",
+						"fileName": "KenftsFundingCluster",
 						"folderPath": "copied",
 						"container": "datakind"
 					},
@@ -1494,7 +1487,7 @@
 							}
 						}
 					],
-					"script": "section Section1;\r\nshared ds_KenftsFundingCluster_copied = let AdfDoc = AzureStorage.BlobContents(\"https://pcoulibalystorage.blob.core.windows.net/datakind/copied/KenFoodPrice\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_KenftsFundingCluster_copied\",\n  #\"Removed top rows\" = Table.Skip(Source, 1) in #\"Removed top rows\";\r\n",
+					"script": "section Section1;\r\nshared ds_KenftsFundingCluster_copied = let AdfDoc = AzureStorage.BlobContents(\"https://pcoulibalystorage.blob.core.windows.net/datakind/copied/KenftsFundingCluster\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_KenftsFundingCluster_copied\",\n  #\"Removed top rows\" = Table.Skip(Source, 1) in #\"Removed top rows\";\r\n",
 					"documentLocale": "en-us"
 				}
 			},
