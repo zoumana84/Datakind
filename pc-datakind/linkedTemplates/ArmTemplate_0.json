@@ -729,6 +729,45 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Power Query1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "KenFoodPrices",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {
+										"tableName": "kenfoodprices"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -741,6 +780,7 @@
 				"[concat(variables('factoryId'), '/datasets/ds_KenFoodPricesSrc')]",
 				"[concat(variables('factoryId'), '/datasets/ds_KenFoodPrices_copied')]",
 				"[concat(variables('factoryId'), '/dataflows/pq_KenFoodPrices')]",
+				"[concat(variables('factoryId'), '/dataflows/KenFoodPrices')]",
 				"[concat(variables('factoryId'), '/datasets/ds_KenFoodPrices_pqtarget')]"
 			]
 		}
