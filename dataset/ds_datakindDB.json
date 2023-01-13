@@ -1,0 +1,22 @@
+{
+	"name": "ds_datakindDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_datakindpostgres",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tableName": {
+				"type": "string",
+				"defaultValue": "datakindtable"
+			}
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": "@dataset().tableName"
+		}
+	}
+}
