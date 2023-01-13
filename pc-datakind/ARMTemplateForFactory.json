@@ -410,168 +410,144 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "date",
+											"name": "countryCode",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "date",
+											"name": "countryCode",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "admin1",
+											"name": "id",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "admin1",
+											"name": "id",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "admin2",
+											"name": "name",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "admin2",
+											"name": "name",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "market",
+											"name": "code",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "market",
+											"name": "code",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "latitude",
+											"name": "startDate",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "latitude",
+											"name": "startDate",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "longitude",
+											"name": "endDate",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "longitude",
+											"name": "endDate",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "category",
+											"name": "year",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "category",
+											"name": "year",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "commodity",
+											"name": "clusterCode",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "commodity",
+											"name": "clusterCode",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "unit",
+											"name": "cluster",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "unit",
+											"name": "cluster",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "priceflag",
+											"name": "requirements",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "priceflag",
+											"name": "requirements",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "pricetype",
+											"name": "funding",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "pricetype",
+											"name": "funding",
 											"type": "String",
 											"physicalType": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "currency",
+											"name": "percentFunded",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "currency",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "price",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "price",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "usdprice",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "usdprice",
+											"name": "percentFunded",
 											"type": "String",
 											"physicalType": "String"
 										}
