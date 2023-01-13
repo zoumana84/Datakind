@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "pc-datakind"
 		},
+		"ls_datakindpostgres_connectionString": {
+			"value": ""
+		},
 		"ls_injectionsa_connectionString": {
 			"value": ""
 		},
