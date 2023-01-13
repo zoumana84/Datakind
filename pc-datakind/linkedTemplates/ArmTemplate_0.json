@@ -718,8 +718,8 @@
 				"typeProperties": {
 					"sources": [
 						{
-							"name": "ds_KenFoodPrices_copied",
-							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_KenFoodPrices_copied",
+							"name": "ds_KenftsFundingCluster_copied",
+							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_KenftsFundingCluster_copied",
 							"dataset": {
 								"referenceName": "ds_KenftsFundingCluster_copied",
 								"type": "DatasetReference"
@@ -1309,7 +1309,7 @@
 								"referenceName": "pq_KenftsFundingCluster",
 								"type": "DataFlowReference",
 								"datasetParameters": {
-									"ds_KenFoodPrices_copied": {},
+									"ds_KenftsFundingCluster_copied": {},
 									"dsKenftsFundingClusterpqtarget": {}
 								}
 							},
