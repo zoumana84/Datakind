@@ -288,8 +288,7 @@
 									"sink1": {
 										"tableName": "kenfoodprices"
 									}
-								},
-								"linkedServiceParameters": {}
+								}
 							},
 							"staging": {},
 							"compute": {
@@ -524,62 +523,11 @@
 						]
 					},
 					{
-						"name": "Power Query1",
-						"type": "ExecuteWranglingDataflow",
-						"dependsOn": [
-							{
-								"activity": "Copy data1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "pq_KenftsFundingCluster",
-								"type": "DataFlowReference",
-								"datasetParameters": {
-									"ds_KenftsFundingCluster_copied": {},
-									"dsKenftsFundingClusterpqtarget": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"queries": [
-								{
-									"queryName": "UserQuery",
-									"dataflowSinks": [
-										{
-											"name": "dsKenftsFundingClusterpqtarget",
-											"dataset": {
-												"referenceName": "ds_KenftsFundingCluster_pqtarget",
-												"type": "DatasetReference",
-												"parameters": {}
-											},
-											"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tpartitionFileNames:['KenftsFundingCluster'],\n\ttruncate: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> dsKenftsFundingClusterpqtarget"
-										}
-									]
-								}
-							]
-						}
-					},
-					{
 						"name": "Data flow1",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [
 							{
-								"activity": "Power Query1",
+								"activity": "Copy data1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -600,6 +548,7 @@
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {},
+									"source2": {},
 									"sink1": {
 										"tableName": "kenftsfundingcluster"
 									}
@@ -612,6 +561,65 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "Copy data2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_KenftsFundingGlobalClusterSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_KenftsFundingClusterGlobal_copied",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -623,9 +631,9 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingClusterSrc')]",
 				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]",
-				"[concat(variables('factoryId'), '/dataflows/pq_KenftsFundingCluster')]",
 				"[concat(variables('factoryId'), '/dataflows/KenftsFundingCluster')]",
-				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_pqtarget')]"
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingGlobalClusterSrc')]",
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingClusterGlobal_copied')]"
 			]
 		},
 		{
@@ -636,6 +644,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_humdata",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Sources"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -720,6 +731,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -884,6 +898,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_KenftsFundingClusterGlobal_copied')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "KenftsFundingClusterGlobal",
+						"folderPath": "copied",
+						"container": "datakind"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_KenftsFundingClusterSrc')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -891,6 +934,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_humdata",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Sources"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -967,6 +1013,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1066,37 +1115,86 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_datakindDB')]",
+			"name": "[concat(parameters('factoryName'), '/ds_KenftsFundingGlobalClusterSrc')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_datakindpostgres",
+					"referenceName": "ls_humdata",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"tableName": {
-						"type": "string",
-						"defaultValue": "datakindtable"
-					}
+				"folder": {
+					"name": "Kenya/Sources"
 				},
 				"annotations": [],
-				"type": "AzurePostgreSqlTable",
-				"schema": [],
+				"type": "DelimitedText",
 				"typeProperties": {
-					"schema": "public",
-					"table": {
-						"value": "@dataset().tableName",
-						"type": "Expression"
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "d0bf93aa-bc16-426b-b53b-c8c90fac98a4/resource/b6136d9e-24a4-4864-adbc-adef30e62516/download/fts_requirements_funding_globalcluster_ken.csv"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "countryCode",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "code",
+						"type": "String"
+					},
+					{
+						"name": "startDate",
+						"type": "String"
+					},
+					{
+						"name": "endDate",
+						"type": "String"
+					},
+					{
+						"name": "year",
+						"type": "String"
+					},
+					{
+						"name": "clusterCode",
+						"type": "String"
+					},
+					{
+						"name": "cluster",
+						"type": "String"
+					},
+					{
+						"name": "requirements",
+						"type": "String"
+					},
+					{
+						"name": "funding",
+						"type": "String"
+					},
+					{
+						"name": "percentFunded",
+						"type": "String"
 					}
-				}
+				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_datakindpostgres')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_humdata')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_datakindDB1')]",
+			"name": "[concat(parameters('factoryName'), '/ds_datakindDB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1273,10 +1371,17 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "ds_KenftsFundingCluster_pqtarget",
+								"referenceName": "ds_KenftsFundingCluster_copied",
 								"type": "DatasetReference"
 							},
 							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_KenftsFundingClusterGlobal_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
 						}
 					],
 					"sinks": [
@@ -1291,14 +1396,45 @@
 					"transformations": [
 						{
 							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "types"
 						}
 					],
 					"scriptLines": [
-						"source(allowSchemaDrift: true,",
+						"source(output(",
+						"          countryCode as string,",
+						"          id as string,",
+						"          name as string,",
+						"          code as string,",
+						"          startDate as string,",
+						"          endDate as string,",
+						"          year as string,",
+						"          clusterCode as string,",
+						"          cluster as string,",
+						"          requirements as string,",
+						"          funding as string,",
+						"          percentFunded as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 split(contains(array(toString(columns())), isNull(#item)),",
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source2",
+						"types split(contains(array(toString(columns())), isNull(#item)),",
 						"     disjoint: false) ~> split1@(Null, Good)",
+						"source1 filter(not(startsWith(countryCode, '#'))) ~> filter1",
+						"filter1 derive(id = toInteger(id),",
+						"          startDate = toDate(startDate),",
+						"          endDate = toDate(endDate),",
+						"          year = toInteger(year),",
+						"          funding = toFloat(funding),",
+						"          percentFunded = toFloat(percentFunded),",
+						"          clusterCode = toInteger(clusterCode)) ~> types",
 						"split1@Good sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
@@ -1312,7 +1448,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_pqtarget')]",
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]",
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingClusterGlobal_copied')]",
 				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
 			]
 		},
