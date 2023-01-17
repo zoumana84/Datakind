@@ -506,11 +506,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"ColumnMapping": {
-				"type": "string"
-			}
-		},
 		"folder": {
 			"name": "Kenya"
 		},
