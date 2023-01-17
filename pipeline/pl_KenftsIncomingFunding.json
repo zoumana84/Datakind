@@ -39,6 +39,452 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "budgetYear",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "budgetYear",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "amountUSD",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "amountUSD",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "srcOrganization",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "srcOrganization",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "srcOrganizationTypes",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "srcOrganizationTypes",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "srcLocations",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "srcLocations",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "srcUsageYearStart",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "srcUsageYearStart",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "srcUsageYearEnd",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "srcUsageYearEnd",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destPlan",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destPlan",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destPlanCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destPlanCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destPlanId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destPlanId",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destOrganization",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destOrganization",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destOrganizationTypes",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destOrganizationTypes",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destGlobalClusters",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destGlobalClusters",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destLocations",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destLocations",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destProject",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destProject",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destProjectCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destProjectCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destEmergency",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destEmergency",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destUsageYearStart",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destUsageYearStart",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destUsageYearEnd",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destUsageYearEnd",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "contributionType",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "contributionType",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "flowType",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "flowType",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "method",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "method",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "boundary",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "boundary",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "onBoundary",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "onBoundary",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "firstReportedDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "firstReportedDate",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "decisionDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "decisionDate",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "keywords",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "keywords",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "originalAmount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "originalAmount",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "originalCurrency",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "originalCurrency",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "exchangeRate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "exchangeRate",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "refCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "refCode",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdAt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "createdAt",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "updatedAt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "updatedAt",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
