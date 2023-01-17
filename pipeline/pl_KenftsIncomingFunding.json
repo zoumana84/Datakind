@@ -1,9 +1,9 @@
 {
-	"name": "pl_KenftsFundingClusterGlobal",
+	"name": "pl_KenftsIncomingFunding",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data2",
+				"name": "Copy data1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -48,13 +48,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_KenftsFundingGlobalClusterSrc",
+						"referenceName": "ds_KenftsIncomingFundingSrc",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_KenftsFundingClusterGlobal_copied",
+						"referenceName": "KenftsIncomingFunding_copied",
 						"type": "DatasetReference"
 					}
 				]
