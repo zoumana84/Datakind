@@ -1,0 +1,94 @@
+{
+	"name": "KenftsIncomingFunding",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "KenftsIncomingFunding_copied",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_datakindDB",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "types"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          date as string,",
+				"          budgetYear as string,",
+				"          description as string,",
+				"          amountUSD as string,",
+				"          srcOrganization as string,",
+				"          srcOrganizationTypes as string,",
+				"          srcLocations as string,",
+				"          srcUsageYearStart as string,",
+				"          srcUsageYearEnd as string,",
+				"          destPlan as string,",
+				"          destPlanCode as string,",
+				"          destPlanId as string,",
+				"          destOrganization as string,",
+				"          destOrganizationTypes as string,",
+				"          destGlobalClusters as string,",
+				"          destLocations as string,",
+				"          destProject as string,",
+				"          destProjectCode as string,",
+				"          destEmergency as string,",
+				"          destUsageYearStart as string,",
+				"          destUsageYearEnd as string,",
+				"          contributionType as string,",
+				"          flowType as string,",
+				"          method as string,",
+				"          boundary as string,",
+				"          onBoundary as string,",
+				"          status as string,",
+				"          firstReportedDate as string,",
+				"          decisionDate as string,",
+				"          keywords as string,",
+				"          originalAmount as string,",
+				"          originalCurrency as string,",
+				"          exchangeRate as string,",
+				"          id as string,",
+				"          refCode as string,",
+				"          createdAt as string,",
+				"          updatedAt as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"types split(contains(array(toString(columns())), isNull(#item)),",
+				"     disjoint: false) ~> split1@(Null, Good)",
+				"source1 filter(not(startsWith(date, '#'))) ~> filter1",
+				"filter1 derive(date = toDate(date)) ~> types",
+				"split1@Good sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
