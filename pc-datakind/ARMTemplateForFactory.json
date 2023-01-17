@@ -92,7 +92,7 @@
 									"source1": {},
 									"source2": {},
 									"sink1": {
-										"tableName": "datakindtable"
+										"tableName": "kenftsfunding"
 									}
 								}
 							},
