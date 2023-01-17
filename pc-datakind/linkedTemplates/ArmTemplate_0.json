@@ -66,6 +66,184 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/KenftsIncomingFunding_copied')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "KenftsIncomingFunding",
+						"folderPath": "copied",
+						"container": "datakind"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "date",
+						"type": "String"
+					},
+					{
+						"name": "budgetYear",
+						"type": "String"
+					},
+					{
+						"name": "description",
+						"type": "String"
+					},
+					{
+						"name": "amountUSD",
+						"type": "String"
+					},
+					{
+						"name": "srcOrganization",
+						"type": "String"
+					},
+					{
+						"name": "srcOrganizationTypes",
+						"type": "String"
+					},
+					{
+						"name": "srcLocations",
+						"type": "String"
+					},
+					{
+						"name": "srcUsageYearStart",
+						"type": "String"
+					},
+					{
+						"name": "srcUsageYearEnd",
+						"type": "String"
+					},
+					{
+						"name": "destPlan",
+						"type": "String"
+					},
+					{
+						"name": "destPlanCode",
+						"type": "String"
+					},
+					{
+						"name": "destPlanId",
+						"type": "String"
+					},
+					{
+						"name": "destOrganization",
+						"type": "String"
+					},
+					{
+						"name": "destOrganizationTypes",
+						"type": "String"
+					},
+					{
+						"name": "destGlobalClusters",
+						"type": "String"
+					},
+					{
+						"name": "destLocations",
+						"type": "String"
+					},
+					{
+						"name": "destProject",
+						"type": "String"
+					},
+					{
+						"name": "destProjectCode",
+						"type": "String"
+					},
+					{
+						"name": "destEmergency",
+						"type": "String"
+					},
+					{
+						"name": "destUsageYearStart",
+						"type": "String"
+					},
+					{
+						"name": "destUsageYearEnd",
+						"type": "String"
+					},
+					{
+						"name": "contributionType",
+						"type": "String"
+					},
+					{
+						"name": "flowType",
+						"type": "String"
+					},
+					{
+						"name": "method",
+						"type": "String"
+					},
+					{
+						"name": "boundary",
+						"type": "String"
+					},
+					{
+						"name": "onBoundary",
+						"type": "String"
+					},
+					{
+						"name": "status",
+						"type": "String"
+					},
+					{
+						"name": "firstReportedDate",
+						"type": "String"
+					},
+					{
+						"name": "decisionDate",
+						"type": "String"
+					},
+					{
+						"name": "keywords",
+						"type": "String"
+					},
+					{
+						"name": "originalAmount",
+						"type": "String"
+					},
+					{
+						"name": "originalCurrency",
+						"type": "String"
+					},
+					{
+						"name": "exchangeRate",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "refCode",
+						"type": "String"
+					},
+					{
+						"name": "createdAt",
+						"type": "String"
+					},
+					{
+						"name": "updatedAt",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_KenFoodPricesSrc')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -672,36 +850,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_datakindDB')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_datakindpostgres",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"tableName": {
-						"type": "string",
-						"defaultValue": "datakindtable"
-					}
-				},
-				"annotations": [],
-				"type": "AzurePostgreSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "public",
-					"table": {
-						"value": "@dataset().tableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_datakindpostgres')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ds_KenftsIncomingFundingSrc')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -881,32 +1029,33 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/KenftsIncomingFunding_copied')]",
+			"name": "[concat(parameters('factoryName'), '/ds_datakindDB')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_injectionsa",
+					"referenceName": "ls_datakindpostgres",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "KenftsIncomingFunding",
-						"folderPath": "copied",
-						"container": "datakind"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+				"parameters": {
+					"tableName": {
+						"type": "string",
+						"defaultValue": "datakindtable"
+					}
 				},
-				"schema": []
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "public",
+					"table": {
+						"value": "@dataset().tableName",
+						"type": "Expression"
+					}
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_datakindpostgres')]"
 			]
 		},
 		{
@@ -1216,6 +1365,537 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_KenftsIncomingFunding')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "budgetYear",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "budgetYear",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "description",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "amountUSD",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "amountUSD",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "srcOrganization",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srcOrganization",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "srcOrganizationTypes",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srcOrganizationTypes",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "srcLocations",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srcLocations",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "srcUsageYearStart",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srcUsageYearStart",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "srcUsageYearEnd",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "srcUsageYearEnd",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destPlan",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destPlan",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destPlanCode",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destPlanCode",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destPlanId",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destPlanId",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destOrganization",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destOrganization",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destOrganizationTypes",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destOrganizationTypes",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destGlobalClusters",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destGlobalClusters",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destLocations",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destLocations",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destProject",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destProject",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destProjectCode",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destProjectCode",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destEmergency",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destEmergency",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destUsageYearStart",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destUsageYearStart",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destUsageYearEnd",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destUsageYearEnd",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "contributionType",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "contributionType",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "flowType",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "flowType",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "method",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "method",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "boundary",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "boundary",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "onBoundary",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "onBoundary",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "firstReportedDate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "firstReportedDate",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "decisionDate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "decisionDate",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "keywords",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "keywords",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "originalAmount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "originalAmount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "originalCurrency",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "originalCurrency",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "exchangeRate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "exchangeRate",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "id",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "refCode",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "refCode",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "createdAt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "createdAt",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "updatedAt",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "updatedAt",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_KenftsIncomingFundingSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "KenftsIncomingFunding_copied",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"ColumnMapping": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Kenya"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsIncomingFundingSrc')]",
+				"[concat(variables('factoryId'), '/datasets/KenftsIncomingFunding_copied')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/KenFoodPrices')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1427,53 +2107,103 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pq_KenFoodPrices')]",
+			"name": "[concat(parameters('factoryName'), '/KenftsIncomingFunding')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "WranglingDataFlow",
+				"type": "MappingDataFlow",
 				"typeProperties": {
 					"sources": [
 						{
-							"name": "ds_KenFoodPrices_copied",
-							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_KenFoodPrices_copied",
 							"dataset": {
-								"referenceName": "ds_KenFoodPrices_copied",
+								"referenceName": "KenftsIncomingFunding_copied",
 								"type": "DatasetReference"
-							}
+							},
+							"name": "source1"
 						}
 					],
-					"script": "section Section1;\r\nshared ds_KenFoodPrices_copied = let AdfDoc = AzureStorage.BlobContents(\"https://pcoulibalystorage.blob.core.windows.net/datakind/copied/KenFoodPrice\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_KenFoodPrices_copied\",\r\n  #\"Removed top rows\" = Table.Skip(Source, 1) in #\"Removed top rows\";\r\n",
-					"documentLocale": "en-us"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_KenFoodPrices_copied')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pq_KenftsFundingCluster')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "WranglingDataFlow",
-				"typeProperties": {
-					"sources": [
+					"sinks": [
 						{
-							"name": "ds_KenftsFundingCluster_copied",
-							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_KenftsFundingCluster_copied",
 							"dataset": {
-								"referenceName": "ds_KenftsFundingCluster_copied",
+								"referenceName": "ds_datakindDB",
 								"type": "DatasetReference"
-							}
+							},
+							"name": "sink1"
 						}
 					],
-					"script": "section Section1;\r\nshared ds_KenftsFundingCluster_copied = let AdfDoc = AzureStorage.BlobContents(\"https://pcoulibalystorage.blob.core.windows.net/datakind/copied/KenftsFundingCluster\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_KenftsFundingCluster_copied\",\r\n  #\"Removed top rows\" = Table.Skip(Source, 1) in #\"Removed top rows\";\r\n",
-					"documentLocale": "en-us"
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "types"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          date as string,",
+						"          budgetYear as string,",
+						"          description as string,",
+						"          amountUSD as string,",
+						"          srcOrganization as string,",
+						"          srcOrganizationTypes as string,",
+						"          srcLocations as string,",
+						"          srcUsageYearStart as string,",
+						"          srcUsageYearEnd as string,",
+						"          destPlan as string,",
+						"          destPlanCode as string,",
+						"          destPlanId as string,",
+						"          destOrganization as string,",
+						"          destOrganizationTypes as string,",
+						"          destGlobalClusters as string,",
+						"          destLocations as string,",
+						"          destProject as string,",
+						"          destProjectCode as string,",
+						"          destEmergency as string,",
+						"          destUsageYearStart as string,",
+						"          destUsageYearEnd as string,",
+						"          contributionType as string,",
+						"          flowType as string,",
+						"          method as string,",
+						"          boundary as string,",
+						"          onBoundary as string,",
+						"          status as string,",
+						"          firstReportedDate as string,",
+						"          decisionDate as string,",
+						"          keywords as string,",
+						"          originalAmount as string,",
+						"          originalCurrency as string,",
+						"          exchangeRate as string,",
+						"          id as string,",
+						"          refCode as string,",
+						"          createdAt as string,",
+						"          updatedAt as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"types split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"source1 filter(not(startsWith(date, '#'))) ~> filter1",
+						"filter1 derive(date = toDate(date)) ~> types",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]"
+				"[concat(variables('factoryId'), '/datasets/KenftsIncomingFunding_copied')]",
+				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
 			]
 		}
 	]
