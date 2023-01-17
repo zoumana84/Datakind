@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_KenFoodPrices_pqtarget",
+						"referenceName": "ds_KenFoodPrices_copied",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -24,30 +24,58 @@
 			"transformations": [
 				{
 					"name": "split1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "cleandate"
+				},
+				{
+					"name": "cast1"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
-				"          date as date,",
+				"          date as string,",
 				"          admin1 as string,",
 				"          admin2 as string,",
 				"          market as string,",
-				"          latitude as double,",
-				"          longitude as double,",
+				"          latitude as string,",
+				"          longitude as string,",
 				"          category as string,",
 				"          commodity as string,",
 				"          unit as string,",
 				"          priceflag as string,",
 				"          pricetype as string,",
 				"          currency as string,",
-				"          price as double,",
-				"          usdprice as double",
+				"          price as string,",
+				"          usdprice as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 split(contains(array(toString(columns())), isNull(#item)),",
+				"cast1 split(contains(array(toString(columns())), isNull(#item)),",
 				"     disjoint: false) ~> split1@(Null, Good)",
+				"source1 filter(not(startsWith(date, '#'))) ~> filter1",
+				"filter1 derive(date = toDate(date)) ~> cleandate",
+				"cleandate cast(output(",
+				"          date as date,",
+				"          admin1 as string,",
+				"          admin2 as string,",
+				"          market as string,",
+				"          latitude as string,",
+				"          longitude as string,",
+				"          category as string,",
+				"          commodity as string,",
+				"          unit as string,",
+				"          priceflag as string,",
+				"          pricetype as string,",
+				"          currency as string,",
+				"          price as float,",
+				"          usdprice as float",
+				"     ),",
+				"     errors: true) ~> cast1",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",

@@ -24,14 +24,18 @@
 			"transformations": [
 				{
 					"name": "split1"
+				},
+				{
+					"name": "filter1"
 				}
 			],
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 split(contains(array(toString(columns())), isNull(#item)),",
+				"filter1 split(contains(array(toString(columns())), isNull(#item)),",
 				"     disjoint: false) ~> split1@(Null, Good)",
+				"source1 filter(ERROR_FUNCTION('')) ~> filter1",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
