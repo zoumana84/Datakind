@@ -59,7 +59,7 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"sink1": {
-								"tableName": "datakindtable"
+								"tableName": "kenftsfunding"
 							}
 						}
 					},
