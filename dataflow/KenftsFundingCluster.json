@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_KenftsFundingCluster_pqtarget",
+						"referenceName": "ds_KenftsFundingCluster_copied",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -24,14 +24,42 @@
 			"transformations": [
 				{
 					"name": "split1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "types"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          countryCode as string,",
+				"          id as string,",
+				"          name as string,",
+				"          code as string,",
+				"          startDate as string,",
+				"          endDate as string,",
+				"          year as string,",
+				"          clusterCode as string,",
+				"          cluster as string,",
+				"          requirements as string,",
+				"          funding as string,",
+				"          percentFunded as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 split(contains(array(toString(columns())), isNull(#item)),",
+				"types split(contains(array(toString(columns())), isNull(#item)),",
 				"     disjoint: false) ~> split1@(Null, Good)",
+				"source1 filter(not(startsWith(countryCode, '#'))) ~> filter1",
+				"filter1 derive(id = toInteger(id),",
+				"          startDate = toDate(startDate),",
+				"          endDate = toDate(endDate),",
+				"          year = toInteger(year),",
+				"          funding = toFloat(funding),",
+				"          percentFunded = toFloat(percentFunded),",
+				"          clusterCode = toInteger(clusterCode)) ~> types",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",

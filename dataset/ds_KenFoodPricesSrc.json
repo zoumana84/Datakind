@@ -5,6 +5,9 @@
 			"referenceName": "ls_humdata",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Kenya/Sources"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
