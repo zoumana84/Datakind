@@ -1240,6 +1240,12 @@
 					"referenceName": "ls_humdata",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"dataset": {
+						"type": "string",
+						"defaultValue": "KenftsReqFunding"
+					}
+				},
 				"folder": {
 					"name": "Kenya/Sources"
 				},

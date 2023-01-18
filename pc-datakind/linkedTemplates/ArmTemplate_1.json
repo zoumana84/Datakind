@@ -1503,7 +1503,10 @@
 								"datasetParameters": {
 									"source1": {},
 									"sink1": {
-										"tableName": "datakindtable"
+										"tableName": {
+											"value": "@pipeline().parameters.fileName",
+											"type": "Expression"
+										}
 									}
 								}
 							},
@@ -1519,6 +1522,12 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string",
+						"defaultValue": "KenftsReqFundingCovid"
+					}
 				},
 				"folder": {
 					"name": "Kenya"

@@ -1411,7 +1411,10 @@
 								"datasetParameters": {
 									"source1": {},
 									"sink1": {
-										"tableName": "datakindtable"
+										"tableName": {
+											"value": "@pipeline().parameters.fileName",
+											"type": "Expression"
+										}
 									}
 								}
 							},
@@ -1427,6 +1430,12 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string",
+						"defaultValue": "KenftsReqFundingCovid"
+					}
 				},
 				"folder": {
 					"name": "Kenya"
@@ -2613,6 +2622,12 @@
 				"linkedServiceName": {
 					"referenceName": "ls_humdata",
 					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"dataset": {
+						"type": "string",
+						"defaultValue": "KenftsReqFunding"
+					}
 				},
 				"folder": {
 					"name": "Kenya/Sources"
