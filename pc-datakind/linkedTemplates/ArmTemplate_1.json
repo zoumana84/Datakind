@@ -13,6 +13,307 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/KenFoodPrices')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_KenFoodPrices_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "cleandate"
+						},
+						{
+							"name": "cast1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          date as string,",
+						"          admin1 as string,",
+						"          admin2 as string,",
+						"          market as string,",
+						"          latitude as string,",
+						"          longitude as string,",
+						"          category as string,",
+						"          commodity as string,",
+						"          unit as string,",
+						"          priceflag as string,",
+						"          pricetype as string,",
+						"          currency as string,",
+						"          price as string,",
+						"          usdprice as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"cast1 split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"source1 filter(not(startsWith(date, '#'))) ~> filter1",
+						"filter1 derive(date = toDate(date)) ~> cleandate",
+						"cleandate cast(output(",
+						"          date as date,",
+						"          admin1 as string,",
+						"          admin2 as string,",
+						"          market as string,",
+						"          latitude as string,",
+						"          longitude as string,",
+						"          category as string,",
+						"          commodity as string,",
+						"          unit as string,",
+						"          priceflag as string,",
+						"          pricetype as string,",
+						"          currency as string,",
+						"          price as float,",
+						"          usdprice as float",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenftsFundingCluster')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_KenftsFundingCluster_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_KenftsFundingClusterGlobal_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "types"
+						},
+						{
+							"name": "join1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          countryCode as string,",
+						"          id as string,",
+						"          name as string,",
+						"          code as string,",
+						"          startDate as string,",
+						"          endDate as string,",
+						"          year as string,",
+						"          clusterCode as string,",
+						"          cluster as string,",
+						"          requirements as string,",
+						"          funding as string,",
+						"          percentFunded as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source(output(",
+						"          countryCode as string,",
+						"          id as string,",
+						"          name as string,",
+						"          code as string,",
+						"          startDate as string,",
+						"          endDate as string,",
+						"          year as string,",
+						"          clusterCode as string,",
+						"          cluster as string,",
+						"          requirements as string,",
+						"          funding as string,",
+						"          percentFunded as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source2",
+						"types split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"join1 filter(not(startsWith(source1@countryCode, '#'))) ~> filter1",
+						"filter1 derive(id = toInteger(source1@id),",
+						"          startDate = toDate(source1@startDate),",
+						"          endDate = toDate(source1@endDate),",
+						"          year = toInteger(source1@year),",
+						"          funding = toFloat(source1@funding),",
+						"          percentFunded = toFloat(source1@percentFunded),",
+						"          clusterCode = toInteger(source1@clusterCode)) ~> types",
+						"source1, source2 join(source1@countryCode == source2@countryCode,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenftsIncomingFunding')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "KenftsIncomingFunding_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "types"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          date as string,",
+						"          budgetYear as string,",
+						"          description as string,",
+						"          amountUSD as string,",
+						"          srcOrganization as string,",
+						"          srcOrganizationTypes as string,",
+						"          srcLocations as string,",
+						"          srcUsageYearStart as string,",
+						"          srcUsageYearEnd as string,",
+						"          destPlan as string,",
+						"          destPlanCode as string,",
+						"          destPlanId as string,",
+						"          destOrganization as string,",
+						"          destOrganizationTypes as string,",
+						"          destGlobalClusters as string,",
+						"          destLocations as string,",
+						"          destProject as string,",
+						"          destProjectCode as string,",
+						"          destEmergency as string,",
+						"          destUsageYearStart as string,",
+						"          destUsageYearEnd as string,",
+						"          contributionType as string,",
+						"          flowType as string,",
+						"          method as string,",
+						"          boundary as string,",
+						"          onBoundary as string,",
+						"          status as string,",
+						"          firstReportedDate as string,",
+						"          decisionDate as string,",
+						"          keywords as string,",
+						"          originalAmount as string,",
+						"          originalCurrency as string,",
+						"          exchangeRate as string,",
+						"          id as string,",
+						"          refCode as string,",
+						"          createdAt as string,",
+						"          updatedAt as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"types split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"source1 filter(not(startsWith(date, '#'))) ~> filter1",
+						"filter1 derive(date = toDate(date)) ~> types",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pq_KenFoodPrices')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -145,7 +446,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/KenftsFundingCluster')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_KenFoodPrices')]",
@@ -431,7 +734,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/KenFoodPrices')]"
+			]
 		}
 	]
 }
