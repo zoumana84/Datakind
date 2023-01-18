@@ -184,7 +184,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators')]",
+			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators_copied')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -203,6 +203,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().dataset",
+							"type": "Expression"
+						},
 						"folderPath": "copied",
 						"container": "datakind"
 					},

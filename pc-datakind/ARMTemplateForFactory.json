@@ -576,6 +576,80 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Country Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Country ISO3",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country ISO3",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Year",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Year",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Indicator Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Indicator Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Indicator Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Indicator Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Value",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Value",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -592,7 +666,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "KenHealthIndicators",
+								"referenceName": "KenHealthIndicators_copied",
 								"type": "DatasetReference",
 								"parameters": {
 									"dataset": {
@@ -621,7 +695,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_KenHealthIndicatorsSrc')]",
-				"[concat(variables('factoryId'), '/datasets/KenHealthIndicators')]"
+				"[concat(variables('factoryId'), '/datasets/KenHealthIndicators_copied')]"
 			]
 		},
 		{
@@ -1784,7 +1858,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators')]",
+			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators_copied')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1803,6 +1877,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().dataset",
+							"type": "Expression"
+						},
 						"folderPath": "copied",
 						"container": "datakind"
 					},
@@ -3482,6 +3560,83 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/KenHealthFacilities_copied')]",
+				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "KenHealthIndicators_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Code as short,",
+						"          Name as string,",
+						"          Registration_number as string,",
+						"          {Keph level} as string,",
+						"          {Facility type} as string,",
+						"          Owner as string,",
+						"          {Regulatory body} as string,",
+						"          Beds as short,",
+						"          Cots as short,",
+						"          County as string,",
+						"          Constituency as string,",
+						"          {Sub county} as string,",
+						"          Ward as string,",
+						"          {Operation status} as string,",
+						"          Open_whole_day as boolean,",
+						"          Open_public_holidays as boolean,",
+						"          Open_weekends as boolean,",
+						"          Open_late_night as boolean,",
+						"          Service_names as string,",
+						"          Approved as boolean,",
+						"          {Public visible} as boolean,",
+						"          Closed as boolean",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/KenHealthIndicators_copied')]",
 				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
 			]
 		},
