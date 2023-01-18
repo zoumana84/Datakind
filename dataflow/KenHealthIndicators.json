@@ -1,0 +1,71 @@
+{
+	"name": "KenHealthIndicators",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "KenHealthIndicators_copied",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_datakindDB",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Code as short,",
+				"          Name as string,",
+				"          Registration_number as string,",
+				"          {Keph level} as string,",
+				"          {Facility type} as string,",
+				"          Owner as string,",
+				"          {Regulatory body} as string,",
+				"          Beds as short,",
+				"          Cots as short,",
+				"          County as string,",
+				"          Constituency as string,",
+				"          {Sub county} as string,",
+				"          Ward as string,",
+				"          {Operation status} as string,",
+				"          Open_whole_day as boolean,",
+				"          Open_public_holidays as boolean,",
+				"          Open_weekends as boolean,",
+				"          Open_late_night as boolean,",
+				"          Service_names as string,",
+				"          Approved as boolean,",
+				"          {Public visible} as boolean,",
+				"          Closed as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 split(contains(array(toString(columns())), isNull(#item)),",
+				"     disjoint: false) ~> split1@(Null, Good)",
+				"split1@Good sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

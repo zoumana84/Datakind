@@ -1,5 +1,5 @@
 {
-	"name": "KenHealthIndicators",
+	"name": "KenHealthIndicators_copied",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_injectionsa",
@@ -16,6 +16,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().dataset",
+					"type": "Expression"
+				},
 				"folderPath": "copied",
 				"container": "datakind"
 			},

@@ -39,6 +39,80 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Country Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country Name",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Country ISO3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country ISO3",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Year",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Year",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Indicator Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Indicator Name",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Indicator Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Indicator Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Value",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Value",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -54,7 +128,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "KenHealthIndicators",
+						"referenceName": "KenHealthIndicators_copied",
 						"type": "DatasetReference",
 						"parameters": {
 							"dataset": {
