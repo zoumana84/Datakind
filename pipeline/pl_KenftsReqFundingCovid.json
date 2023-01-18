@@ -84,7 +84,10 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"sink1": {
-								"tableName": "datakindtable"
+								"tableName": {
+									"value": "@pipeline().parameters.fileName",
+									"type": "Expression"
+								}
 							}
 						}
 					},
@@ -96,6 +99,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"fileName": {
+				"type": "string",
+				"defaultValue": "KenftsReqFundingCovid"
+			}
+		},
 		"folder": {
 			"name": "Kenya"
 		},
