@@ -1,0 +1,50 @@
+{
+	"name": "ds_KenHealthIndicatorsSrc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_humdata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Kenya/Sources"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "e849a312-8962-4595-ace8-500484490569/resource/daa8e9e1-4013-4075-a625-149317412a56/download/health_ken.csv/"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Country Name",
+				"type": "String"
+			},
+			{
+				"name": "Country ISO3",
+				"type": "String"
+			},
+			{
+				"name": "Year",
+				"type": "String"
+			},
+			{
+				"name": "Indicator Name",
+				"type": "String"
+			},
+			{
+				"name": "Indicator Code",
+				"type": "String"
+			},
+			{
+				"name": "Value",
+				"type": "String"
+			}
+		]
+	}
+}
