@@ -3668,6 +3668,9 @@
 						},
 						{
 							"name": "cast1"
+						},
+						{
+							"name": "filter1"
 						}
 					],
 					"scriptLines": [
@@ -3682,7 +3685,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 split(contains(array(toString(columns())), isNull(#item)),",
+						"filter1 split(contains(array(toString(columns())), isNull(#item)),",
 						"     disjoint: false) ~> split1@(Null, Good)",
 						"split1@Good cast(output(",
 						"          {Country Name} as string,",
@@ -3693,8 +3696,10 @@
 						"          Value as float",
 						"     ),",
 						"     errors: true) ~> cast1",
+						"source1 filter(not(startsWith(Year, '#'))) ~> filter1",
 						"cast1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     stagingSchemaName: 'public',",
 						"     deletable:false,",
 						"     insertable:true,",
 						"     updateable:false,",
