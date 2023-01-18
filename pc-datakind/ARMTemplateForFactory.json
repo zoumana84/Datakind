@@ -1298,11 +1298,50 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "KenftsReqFundingCovid",
+								"referenceName": "KenftsReqFundingCovid_copied",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "KenftsReqFundingCovid",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {
+										"tableName": "datakindtable"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -1316,7 +1355,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_KenftsReqFundingCovidSrc')]",
-				"[concat(variables('factoryId'), '/datasets/KenftsReqFundingCovid')]"
+				"[concat(variables('factoryId'), '/datasets/KenftsReqFundingCovid_copied')]",
+				"[concat(variables('factoryId'), '/dataflows/KenftsReqFundingCovid')]"
 			]
 		},
 		{
@@ -1327,6 +1367,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1498,13 +1541,16 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/KenftsReqFundingCovid')]",
+			"name": "[concat(parameters('factoryName'), '/KenftsReqFundingCovid_copied')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1520,7 +1566,60 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": []
+				"schema": [
+					{
+						"name": "countryCode",
+						"type": "String"
+					},
+					{
+						"name": "id",
+						"type": "String"
+					},
+					{
+						"name": "name",
+						"type": "String"
+					},
+					{
+						"name": "code",
+						"type": "String"
+					},
+					{
+						"name": "typeId",
+						"type": "String"
+					},
+					{
+						"name": "typeName",
+						"type": "String"
+					},
+					{
+						"name": "startDate",
+						"type": "String"
+					},
+					{
+						"name": "endDate",
+						"type": "String"
+					},
+					{
+						"name": "year",
+						"type": "String"
+					},
+					{
+						"name": "requirements",
+						"type": "String"
+					},
+					{
+						"name": "funding",
+						"type": "String"
+					},
+					{
+						"name": "covidFunding",
+						"type": "String"
+					},
+					{
+						"name": "covidPercentageOfFunding",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
@@ -1795,6 +1894,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -2773,6 +2875,82 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/KenftsIncomingFunding_copied')]",
+				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenftsReqFundingCovid')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "KenftsReqFundingCovid_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "types"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          countryCode as string,",
+						"          id as string,",
+						"          name as string,",
+						"          code as string,",
+						"          typeId as string,",
+						"          typeName as string,",
+						"          startDate as string,",
+						"          endDate as string,",
+						"          year as string,",
+						"          requirements as string,",
+						"          funding as string,",
+						"          covidFunding as string,",
+						"          covidPercentageOfFunding as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"types split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"source1 filter(not(startsWith(countryCode, '#'))) ~> filter1",
+						"filter1 derive(id = toInteger(id)) ~> types",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/KenftsReqFundingCovid_copied')]",
 				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
 			]
 		},
