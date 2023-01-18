@@ -3644,6 +3644,186 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_KenHealthIndicatorsSrc')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_humdata",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Sources"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "HttpServerLocation",
+						"relativeUrl": "e849a312-8962-4595-ace8-500484490569/resource/daa8e9e1-4013-4075-a625-149317412a56/download/health_ken.csv/"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Country Name",
+						"type": "String"
+					},
+					{
+						"name": "Country ISO3",
+						"type": "String"
+					},
+					{
+						"name": "Year",
+						"type": "String"
+					},
+					{
+						"name": "Indicator Name",
+						"type": "String"
+					},
+					{
+						"name": "Indicator Code",
+						"type": "String"
+					},
+					{
+						"name": "Value",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_humdata')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_KenHealthIndicators')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_KenHealthIndicatorsSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "KenHealthIndicators",
+								"type": "DatasetReference",
+								"parameters": {
+									"dataset": {
+										"value": "@pipeline().parameters.dataset",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"dataset": {
+						"type": "string",
+						"defaultValue": "KenHealthIndicators_copied"
+					}
+				},
+				"folder": {
+					"name": "Kenya"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_KenHealthIndicatorsSrc')]",
+				"[concat(variables('factoryId'), '/datasets/KenHealthIndicators')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"dataset": {
+						"type": "string",
+						"defaultValue": "KenHealthIndicators_copied"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "copied",
+						"container": "datakind"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
 		}
 	]
 }
