@@ -54,7 +54,7 @@
 				"types split(contains(array(toString(columns())), isNull(#item)),",
 				"     disjoint: false) ~> split1@(Null, Good)",
 				"source1 filter(not(startsWith(countryCode, '#'))) ~> filter1",
-				"filter1 derive(date = toDate(date)) ~> types",
+				"filter1 derive(id = toInteger(id)) ~> types",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
