@@ -1,0 +1,70 @@
+{
+	"name": "KenftsReqFundingCovid",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "KenftsReqFundingCovid_copied",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_datakindDB",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "types"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          countryCode as string,",
+				"          id as string,",
+				"          name as string,",
+				"          code as string,",
+				"          typeId as string,",
+				"          typeName as string,",
+				"          startDate as string,",
+				"          endDate as string,",
+				"          year as string,",
+				"          requirements as string,",
+				"          funding as string,",
+				"          covidFunding as string,",
+				"          covidPercentageOfFunding as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"types split(contains(array(toString(columns())), isNull(#item)),",
+				"     disjoint: false) ~> split1@(Null, Good)",
+				"source1 filter(not(startsWith(countryCode, '#'))) ~> filter1",
+				"filter1 derive(date = toDate(date)) ~> types",
+				"split1@Good sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}

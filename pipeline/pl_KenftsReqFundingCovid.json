@@ -54,7 +54,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "KenftsReqFundingCovid",
+						"referenceName": "KenftsReqFundingCovid_copied",
 						"type": "DatasetReference"
 					}
 				]

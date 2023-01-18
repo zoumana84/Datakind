@@ -1,9 +1,12 @@
 {
-	"name": "KenftsReqFundingCovid",
+	"name": "KenftsReqFundingCovid_copied",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_injectionsa",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Kenya/Copy_target"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
@@ -19,6 +22,59 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "countryCode",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "code",
+				"type": "String"
+			},
+			{
+				"name": "typeId",
+				"type": "String"
+			},
+			{
+				"name": "typeName",
+				"type": "String"
+			},
+			{
+				"name": "startDate",
+				"type": "String"
+			},
+			{
+				"name": "endDate",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "requirements",
+				"type": "String"
+			},
+			{
+				"name": "funding",
+				"type": "String"
+			},
+			{
+				"name": "covidFunding",
+				"type": "String"
+			},
+			{
+				"name": "covidPercentageOfFunding",
+				"type": "String"
+			}
+		]
 	}
 }
