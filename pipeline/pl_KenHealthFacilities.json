@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "pl_KenHealthFacilities",
 	"properties": {
 		"activities": [
 			{
@@ -57,6 +57,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"fileName": {
+				"type": "string",
+				"defaultValue": "kenhealthfacilities"
+			}
+		},
 		"folder": {
 			"name": "Kenya"
 		},
