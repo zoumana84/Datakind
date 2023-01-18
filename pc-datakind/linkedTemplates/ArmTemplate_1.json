@@ -124,168 +124,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pl_KenHealthIndicators')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Country Name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Country Name",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Country ISO3",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Country ISO3",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Year",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Year",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Indicator Name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Indicator Name",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Indicator Code",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Indicator Code",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Value",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Value",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_KenHealthIndicatorsSrc",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "KenHealthIndicators_copied",
-								"type": "DatasetReference",
-								"parameters": {
-									"dataset": {
-										"value": "@pipeline().parameters.dataset",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"dataset": {
-						"type": "string",
-						"defaultValue": "KenHealthIndicators_copied"
-					}
-				},
-				"folder": {
-					"name": "Kenya"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/pl_KenftsFundingCluster')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1391,28 +1229,12 @@
 					],
 					"scriptLines": [
 						"source(output(",
-						"          Code as short,",
-						"          Name as string,",
-						"          Registration_number as string,",
-						"          {Keph level} as string,",
-						"          {Facility type} as string,",
-						"          Owner as string,",
-						"          {Regulatory body} as string,",
-						"          Beds as short,",
-						"          Cots as short,",
-						"          County as string,",
-						"          Constituency as string,",
-						"          {Sub county} as string,",
-						"          Ward as string,",
-						"          {Operation status} as string,",
-						"          Open_whole_day as boolean,",
-						"          Open_public_holidays as boolean,",
-						"          Open_weekends as boolean,",
-						"          Open_late_night as boolean,",
-						"          Service_names as string,",
-						"          Approved as boolean,",
-						"          {Public visible} as boolean,",
-						"          Closed as boolean",
+						"          {Country Name} as string,",
+						"          {Country ISO3} as string,",
+						"          Year as string,",
+						"          {Indicator Name} as string,",
+						"          {Indicator Code} as string,",
+						"          Value as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
@@ -1427,7 +1249,15 @@
 						"     upsertable:false,",
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          {Country Name},",
+						"          {Country ISO3},",
+						"          Year,",
+						"          {Indicator Name},",
+						"          {Indicator Code},",
+						"          Value",
+						"     )) ~> sink1"
 					]
 				}
 			},
@@ -2270,6 +2100,218 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/KenHealthFacilities')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_KenHealthIndicators')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Country Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Country ISO3",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country ISO3",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Year",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Year",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Indicator Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Indicator Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Indicator Code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Indicator Code",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Value",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Value",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_KenHealthIndicatorsSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "KenHealthIndicators_copied",
+								"type": "DatasetReference",
+								"parameters": {
+									"dataset": {
+										"value": "@pipeline().parameters.dataset",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "KenHealthIndicators",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"dataset": "KenHealthIndicators_copied"
+									},
+									"sink1": {
+										"tableName": {
+											"value": "@pipeline().parameters.tableName",
+											"type": "Expression"
+										}
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"dataset": {
+						"type": "string",
+						"defaultValue": "KenHealthIndicators_copied"
+					},
+					"tableName": {
+						"type": "string",
+						"defaultValue": "kenhealthindicators"
+					}
+				},
+				"folder": {
+					"name": "Kenya"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/KenHealthIndicators')]"
 			]
 		},
 		{

@@ -676,6 +676,50 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "KenHealthIndicators",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"dataset": "KenHealthIndicators_copied"
+									},
+									"sink1": {
+										"tableName": {
+											"value": "@pipeline().parameters.tableName",
+											"type": "Expression"
+										}
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -686,6 +730,10 @@
 					"dataset": {
 						"type": "string",
 						"defaultValue": "KenHealthIndicators_copied"
+					},
+					"tableName": {
+						"type": "string",
+						"defaultValue": "kenhealthindicators"
 					}
 				},
 				"folder": {
@@ -695,7 +743,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_KenHealthIndicatorsSrc')]",
-				"[concat(variables('factoryId'), '/datasets/KenHealthIndicators_copied')]"
+				"[concat(variables('factoryId'), '/datasets/KenHealthIndicators_copied')]",
+				"[concat(variables('factoryId'), '/dataflows/KenHealthIndicators')]"
 			]
 		},
 		{
@@ -1889,7 +1938,32 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": []
+				"schema": [
+					{
+						"name": "Country Name",
+						"type": "String"
+					},
+					{
+						"name": "Country ISO3",
+						"type": "String"
+					},
+					{
+						"name": "Year",
+						"type": "String"
+					},
+					{
+						"name": "Indicator Name",
+						"type": "String"
+					},
+					{
+						"name": "Indicator Code",
+						"type": "String"
+					},
+					{
+						"name": "Value",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
@@ -3595,28 +3669,12 @@
 					],
 					"scriptLines": [
 						"source(output(",
-						"          Code as short,",
-						"          Name as string,",
-						"          Registration_number as string,",
-						"          {Keph level} as string,",
-						"          {Facility type} as string,",
-						"          Owner as string,",
-						"          {Regulatory body} as string,",
-						"          Beds as short,",
-						"          Cots as short,",
-						"          County as string,",
-						"          Constituency as string,",
-						"          {Sub county} as string,",
-						"          Ward as string,",
-						"          {Operation status} as string,",
-						"          Open_whole_day as boolean,",
-						"          Open_public_holidays as boolean,",
-						"          Open_weekends as boolean,",
-						"          Open_late_night as boolean,",
-						"          Service_names as string,",
-						"          Approved as boolean,",
-						"          {Public visible} as boolean,",
-						"          Closed as boolean",
+						"          {Country Name} as string,",
+						"          {Country ISO3} as string,",
+						"          Year as string,",
+						"          {Indicator Name} as string,",
+						"          {Indicator Code} as string,",
+						"          Value as string",
 						"     ),",
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
@@ -3631,7 +3689,15 @@
 						"     upsertable:false,",
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          {Country Name},",
+						"          {Country ISO3},",
+						"          Year,",
+						"          {Indicator Name},",
+						"          {Indicator Code},",
+						"          Value",
+						"     )) ~> sink1"
 					]
 				}
 			},
