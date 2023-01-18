@@ -1225,6 +1225,9 @@
 					"transformations": [
 						{
 							"name": "split1"
+						},
+						{
+							"name": "cast1"
 						}
 					],
 					"scriptLines": [
@@ -1241,7 +1244,16 @@
 						"     ignoreNoFilesFound: false) ~> source1",
 						"source1 split(contains(array(toString(columns())), isNull(#item)),",
 						"     disjoint: false) ~> split1@(Null, Good)",
-						"split1@Good sink(allowSchemaDrift: true,",
+						"split1@Good cast(output(",
+						"          {Country Name} as string,",
+						"          {Country ISO3} as string,",
+						"          Year as integer,",
+						"          {Indicator Name} as string,",
+						"          {Indicator Code} as string,",
+						"          Value as float",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"cast1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -1249,15 +1261,7 @@
 						"     upsertable:false,",
 						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          {Country Name},",
-						"          {Country ISO3},",
-						"          Year,",
-						"          {Indicator Name},",
-						"          {Indicator Code},",
-						"          Value",
-						"     )) ~> sink1"
+						"     skipDuplicateMapOutputs: true) ~> sink1"
 					]
 				}
 			},
