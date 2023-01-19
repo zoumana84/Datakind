@@ -106,6 +106,22 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "Filter1",
+				"type": "Filter",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.input",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@not(equals(item(), '#'))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -116,6 +132,10 @@
 			"dataset": {
 				"type": "string",
 				"defaultValue": "SomFoodPrices_copied"
+			},
+			"input": {
+				"type": "array",
+				"defaultValue": "columns()"
 			}
 		},
 		"folder": {
