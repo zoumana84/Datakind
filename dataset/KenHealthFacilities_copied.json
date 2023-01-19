@@ -5,6 +5,9 @@
 			"referenceName": "ls_injectionsa",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Kenya/Copy_target"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

@@ -11,6 +11,9 @@
 				"defaultValue": "KenHealthIndicators_copied"
 			}
 		},
+		"folder": {
+			"name": "Kenya/Copy_target"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

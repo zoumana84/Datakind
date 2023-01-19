@@ -1,19 +1,25 @@
 {
-	"name": "KenftsReqFunding_copied",
+	"name": "ds_SomFoodPricesMonthly_copied",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_injectionsa",
 			"type": "LinkedServiceReference"
 		},
-		"folder": {
-			"name": "Kenya/Copy_target"
+		"parameters": {
+			"datasetFileName": {
+				"type": "string",
+				"defaultValue": "SomFoodPricesMonthly_copied"
+			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "KenftsReqFunding",
+				"fileName": {
+					"value": "@dataset().datasetFileName",
+					"type": "Expression"
+				},
 				"folderPath": "copied",
 				"container": "datakind"
 			},

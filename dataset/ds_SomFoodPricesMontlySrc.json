@@ -1,0 +1,30 @@
+{
+	"name": "ds_SomFoodPricesMontlySrc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_humdata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Somalia/Sources"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "?dataset=FEWS_NET_Staple_Food_Price_Data&country=SO&format=csv&fields=website&end_date"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "<!DOCTYPE html>",
+				"type": "String"
+			}
+		]
+	}
+}
