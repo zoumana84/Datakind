@@ -118,6 +118,145 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "ds_SomFoodPrices_copied",
+								"type": "DatasetReference",
+								"parameters": {
+									"datasetFileName": "SomFoodPrices_copied"
+								}
+							},
+							"fieldList": [
+								"structure"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.structure",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Append variable1",
+									"type": "AppendVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "GetColumns",
+										"value": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "SomFoodPrices",
+								"type": "DataFlowReference",
+								"parameters": {
+									"cols": {
+										"value": "'@{variables('GetColumns')}'",
+										"type": "Expression"
+									}
+								},
+								"datasetParameters": {
+									"source1": {
+										"datasetFileName": "SomFoodPrices_copied"
+									},
+									"sink1": {
+										"table": "datakind"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"GetColumns": {
+						"type": "Array"
+					}
+				},
+				"folder": {
+					"name": "Somalia"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_SomFoodPrices_copied')]",
+				"[concat(variables('factoryId'), '/dataflows/SomFoodPrices')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pl_KenFoodPrices')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1878,7 +2017,12 @@
 							"dataflow": {
 								"referenceName": "SomFoodPrices",
 								"type": "DataFlowReference",
-								"parameters": {},
+								"parameters": {
+									"cols": {
+										"value": "'@{activity('Copy data1').output}'",
+										"type": "Expression"
+									}
+								},
 								"datasetParameters": {
 									"source1": {
 										"datasetFileName": {
@@ -1901,6 +2045,22 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "Filter1",
+						"type": "Filter",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.input",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@not(equals(item(), '#'))",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -1915,6 +2075,13 @@
 					"dataset": {
 						"type": "string",
 						"defaultValue": "SomFoodPrices_copied"
+					},
+					"input": {
+						"type": "array"
+					},
+					"cols": {
+						"type": "string",
+						"defaultValue": []
 					}
 				},
 				"folder": {
@@ -4556,6 +4723,9 @@
 						}
 					],
 					"scriptLines": [
+						"parameters{",
+						"     cols as string",
+						"}",
 						"source(output(",
 						"          date as string,",
 						"          admin1 as string,",
