@@ -134,8 +134,8 @@
 				"defaultValue": "SomFoodPrices_copied"
 			},
 			"input": {
-				"type": "array",
-				"defaultValue": "columns()"
+				"type": "object",
+				"defaultValue": "toString(columns())"
 			}
 		},
 		"folder": {
