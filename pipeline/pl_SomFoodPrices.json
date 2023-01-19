@@ -134,7 +134,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.GetColumns",
+						"value": "@variables('GetColumns')",
 						"type": "Expression"
 					},
 					"condition": {
@@ -226,9 +226,11 @@
 			"cols": {
 				"type": "string",
 				"defaultValue": []
-			},
+			}
+		},
+		"variables": {
 			"GetColumns": {
-				"type": "array"
+				"type": "Array"
 			}
 		},
 		"folder": {
