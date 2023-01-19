@@ -55,11 +55,69 @@
 				"outputs": [
 					{
 						"referenceName": "ds_SomFoodPrices_copied",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"datasetFileName": "SomFoodPrices_copied"
+						}
 					}
 				]
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SomFoodPrices",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"datasetFileName": {
+									"value": "@pipeline().parameters.dataset",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"table": {
+									"value": "@pipeline().parameters.tableName",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
+		"parameters": {
+			"tableName": {
+				"type": "string",
+				"defaultValue": "somfoodprices"
+			},
+			"dataset": {
+				"type": "string",
+				"defaultValue": "SomFoodPrices_copied"
+			}
+		},
 		"folder": {
 			"name": "Somalia"
 		},
