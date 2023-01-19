@@ -74,6 +74,9 @@
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "Kenya/Copy_target"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -197,6 +200,9 @@
 						"type": "string",
 						"defaultValue": "KenHealthIndicators_copied"
 					}
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -520,6 +526,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Kenya/Copy_target"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
