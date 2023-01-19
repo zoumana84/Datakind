@@ -16,15 +16,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_SomFoodPricesSrc",
-						"type": "DatasetReference"
+						"referenceName": "ds_SomFoodPrices_copied",
+						"type": "DatasetReference",
+						"parameters": {
+							"datasetFileName": "SomFoodPrices_copied"
+						}
 					},
 					"fieldList": [
 						"structure"
 					],
 					"storeSettings": {
-						"type": "HttpReadSettings",
-						"requestMethod": "GET"
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSettings"

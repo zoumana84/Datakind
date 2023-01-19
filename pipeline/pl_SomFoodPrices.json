@@ -85,6 +85,12 @@
 					"dataflow": {
 						"referenceName": "SomFoodPrices",
 						"type": "DataFlowReference",
+						"parameters": {
+							"cols": {
+								"value": "'@{activity('Copy data1').output}'",
+								"type": "Expression"
+							}
+						},
 						"datasetParameters": {
 							"source1": {
 								"datasetFileName": {
