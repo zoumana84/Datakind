@@ -1,5 +1,5 @@
 {
-	"name": "pl_SomFoodPricesMontly",
+	"name": "pl_SomFoodPrices",
 	"properties": {
 		"activities": [
 			{
@@ -48,17 +48,14 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_SomFoodPricesMontlySrc",
+						"referenceName": "ds_SomFoodPricesSrc",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ds_SomFoodPricesMonthly_copied",
-						"type": "DatasetReference",
-						"parameters": {
-							"datasetFileName": "SomFoodPricesMonthly_copied"
-						}
+						"referenceName": "ds_SomFoodPrices_copied",
+						"type": "DatasetReference"
 					}
 				]
 			}
