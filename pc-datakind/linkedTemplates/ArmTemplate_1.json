@@ -1720,6 +1720,29 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "Filter2",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Copy data1').output",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@not(equals(item(), '#'))",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
