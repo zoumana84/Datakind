@@ -1431,10 +1431,16 @@
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {
-										"datasetFileName": "SomFoodPrices_copied"
+										"datasetFileName": {
+											"value": "@pipeline().parameters.datasetFileName",
+											"type": "Expression"
+										}
 									},
 									"sink1": {
-										"tempSinkFileName": "tempsomefoodprices_target"
+										"tempSinkFileName": {
+											"value": "@pipeline().parameters.tempSinkFileName",
+											"type": "Expression"
+										}
 									}
 								}
 							},
@@ -1455,6 +1461,10 @@
 					"tempSinkFileName": {
 						"type": "string",
 						"defaultValue": "tempsomefoodprices_target"
+					},
+					"datasetFileName": {
+						"type": "string",
+						"defaultValue": "SomFoodPrices_copied"
 					}
 				},
 				"annotations": []
