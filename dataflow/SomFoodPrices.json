@@ -30,9 +30,6 @@
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     cols as string",
-				"}",
 				"source(output(",
 				"          date as string,",
 				"          admin1 as string,",

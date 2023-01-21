@@ -229,10 +229,6 @@
 			},
 			"input": {
 				"type": "array"
-			},
-			"cols": {
-				"type": "string",
-				"defaultValue": []
 			}
 		},
 		"variables": {
