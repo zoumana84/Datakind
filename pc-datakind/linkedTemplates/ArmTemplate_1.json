@@ -1638,11 +1638,36 @@
 										{
 											"referenceName": "temp_somefoodprices_target",
 											"type": "DatasetReference",
-											"parameters": {}
+											"parameters": {
+												"tempSinkFileName": "somefoodprices_target"
+											}
 										}
 									]
 								}
 							]
+						}
+					},
+					{
+						"name": "Filter2",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@not(equals(item(), '#'))",
+								"type": "Expression"
+							}
 						}
 					}
 				],
