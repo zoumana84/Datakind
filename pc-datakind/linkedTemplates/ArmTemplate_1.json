@@ -1735,7 +1735,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Copy data1').output.value",
+								"value": "@activity('Copy data1').output.dataWritten",
 								"type": "Expression"
 							},
 							"condition": {
