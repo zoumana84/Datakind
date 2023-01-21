@@ -1857,7 +1857,7 @@
 								"datasetParameters": {
 									"source1": {
 										"datasetFileName": {
-											"value": "@pipeline().parameters.dataset",
+											"value": "@activity('Filter1').output",
 											"type": "Expression"
 										}
 									},
@@ -1865,6 +1865,13 @@
 										"table": {
 											"value": "@pipeline().parameters.tableName",
 											"type": "Expression"
+										}
+									}
+								},
+								"linkedServiceParameters": {
+									"source1": {
+										"schemaLinkedService": {
+											"datasetFileName": "SomFoodPrices_copied"
 										}
 									}
 								}
