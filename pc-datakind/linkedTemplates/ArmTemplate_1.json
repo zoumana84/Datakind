@@ -434,7 +434,7 @@
 				"parameters": {
 					"tempSinkFileName": {
 						"type": "string",
-						"defaultValue": "somefoodprices_target"
+						"defaultValue": "tempsomefoodprices_target"
 					}
 				},
 				"annotations": [],
