@@ -2480,6 +2480,12 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"tempSinkFileName": {
+						"type": "string",
+						"defaultValue": "tempsomefoodprices_target"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
