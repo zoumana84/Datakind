@@ -305,7 +305,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"tempFileName": {
-								"value": "@item().name",
+								"value": "@pipeline().parameters.dataset",
 								"type": "Expression"
 							}
 						}
