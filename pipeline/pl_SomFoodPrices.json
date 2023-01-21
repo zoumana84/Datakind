@@ -38,6 +38,16 @@
 									"type": "Expression"
 								}
 							}
+						},
+						"linkedServiceParameters": {
+							"source1": {
+								"schemaLinkedService": {
+									"datasetFileName": {
+										"value": "@activity('Filter1').output",
+										"type": "Expression"
+									}
+								}
+							}
 						}
 					},
 					"compute": {
