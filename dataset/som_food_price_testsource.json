@@ -1,0 +1,21 @@
+{
+	"name": "som_food_price_testsource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_injectionsa",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "datakind"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

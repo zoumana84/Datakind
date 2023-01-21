@@ -1,0 +1,33 @@
+{
+	"name": "temp_somefoodprices_target",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_injectionsa",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tempSinkFileName": {
+				"type": "string",
+				"defaultValue": "somefoodprices_target"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().tempSinkFileName",
+					"type": "Expression"
+				},
+				"folderPath": "copied",
+				"container": "datakind"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

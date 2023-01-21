@@ -1,0 +1,32 @@
+{
+	"name": "temp_somfoodprices",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_injectionsa",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"tempFileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().tempFileName",
+					"type": "Expression"
+				},
+				"folderPath": "temp",
+				"container": "datakind"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
