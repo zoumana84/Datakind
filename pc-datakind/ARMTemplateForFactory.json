@@ -4478,10 +4478,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().tempSinkFileName",
-							"type": "Expression"
-						},
+						"fileName": "tempsomefoodprices_target",
 						"folderPath": "copied",
 						"container": "datakind"
 					},
