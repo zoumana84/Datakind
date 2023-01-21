@@ -919,12 +919,7 @@
 							"dataflow": {
 								"referenceName": "SomFoodPrices",
 								"type": "DataFlowReference",
-								"parameters": {
-									"cols": {
-										"value": "'@{activity('Copy data1').output}'",
-										"type": "Expression"
-									}
-								},
+								"parameters": {},
 								"datasetParameters": {
 									"source1": {
 										"datasetFileName": {
@@ -939,13 +934,7 @@
 										}
 									}
 								},
-								"linkedServiceParameters": {
-									"source1": {
-										"schemaLinkedService": {
-											"datasetFileName": "SomFoodPrices_copied"
-										}
-									}
-								}
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
@@ -1129,10 +1118,6 @@
 					},
 					"input": {
 						"type": "array"
-					},
-					"cols": {
-						"type": "string",
-						"defaultValue": []
 					}
 				},
 				"variables": {
