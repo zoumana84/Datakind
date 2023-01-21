@@ -3,44 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow1",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "SomFoodPrices",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"source1": {
-								"datasetFileName": {
-									"value": "@activity('Filter1').output.value",
-									"type": "Expression"
-								}
-							},
-							"sink1": {
-								"table": {
-									"value": "@pipeline().parameters.tableName",
-									"type": "Expression"
-								}
-							}
-						}
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
-			},
-			{
 				"name": "Filter1",
 				"type": "Filter",
 				"dependsOn": [
@@ -210,6 +172,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter1').output.value",
+						"type": "Expression"
+					},
 					"activities": [
 						{
 							"name": "Copy data3",
