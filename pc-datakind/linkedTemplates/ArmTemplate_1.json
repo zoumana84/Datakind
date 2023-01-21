@@ -1452,8 +1452,7 @@
 								}
 							},
 							"fieldList": [
-								"structure",
-								"childItems"
+								"structure"
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
@@ -1649,27 +1648,78 @@
 						}
 					},
 					{
-						"name": "Filter2",
-						"type": "Filter",
+						"name": "Copy data3_copy1",
+						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Get Metadata1",
+								"activity": "Filter1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
 							}
 						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
 						"userProperties": [],
 						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
 							},
-							"condition": {
-								"value": "@not(equals(item(), '#'))",
-								"type": "Expression"
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
 							}
-						}
+						},
+						"inputs": [
+							{
+								"referenceName": "temp_somfoodprices",
+								"type": "DatasetReference",
+								"parameters": {
+									"tempFileName": {
+										"value": "@pipeline().parameters.dataset",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "temp_somefoodprices_target",
+								"type": "DatasetReference",
+								"parameters": {
+									"tempSinkFileName": "somefoodprices_target"
+								}
+							}
+						]
 					}
 				],
 				"policy": {
