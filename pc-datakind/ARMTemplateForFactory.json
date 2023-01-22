@@ -4790,10 +4790,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().datasetTempName",
-							"type": "Expression"
-						},
+						"fileName": "temp_SomftsReqFundingCluster_target",
 						"folderPath": "copied",
 						"container": "datakind"
 					},
