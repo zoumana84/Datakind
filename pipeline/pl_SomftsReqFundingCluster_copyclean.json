@@ -90,10 +90,16 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"source1": {
-								"datasetFileName": "SomftsReqFundingCluster_copied"
+								"datasetFileName": {
+									"value": "@pipeline().parameters.datasetFileName",
+									"type": "Expression"
+								}
 							},
 							"sink1": {
-								"datasetTempName": "temp_SomftsReqFundingCluster_target"
+								"datasetTempName": {
+									"value": "@pipeline().parameters.datasetTempName",
+									"type": "Expression"
+								}
 							}
 						}
 					},
@@ -109,6 +115,10 @@
 			"datasetFileName": {
 				"type": "string",
 				"defaultValue": "SomftsReqFundingCluster_copied"
+			},
+			"datasetTempName": {
+				"type": "string",
+				"defaultValue": "temp_SomftsReqFundingCluster_target"
 			}
 		},
 		"folder": {
