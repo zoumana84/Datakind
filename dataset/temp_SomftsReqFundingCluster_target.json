@@ -1,18 +1,15 @@
 {
-	"name": "SomftsReqFundingCluster_copied",
+	"name": "temp_SomftsReqFundingCluster_target",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_injectionsa",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"datasetFileName": {
+			"datasetTempName": {
 				"type": "string",
-				"defaultValue": "SomftsReqFundingCluster_copied"
+				"defaultValue": "temp_SomftsReqFundingCluster_target"
 			}
-		},
-		"folder": {
-			"name": "Somalia/copied"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
@@ -20,7 +17,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "@dataset().datasetFileName",
+					"value": "@dataset().datasetTempName",
 					"type": "Expression"
 				},
 				"folderPath": "copied",
