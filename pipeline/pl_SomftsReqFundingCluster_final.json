@@ -1,0 +1,43 @@
+{
+	"name": "pl_SomftsReqFundingCluster_final",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "pl_SomftsReqFundingCluster_final",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"datasetTempName": "temp_SomftsReqFundingCluster_target"
+							},
+							"sink1": {
+								"table": "somftsreqfundingcluster"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Somalia"
+		},
+		"annotations": []
+	}
+}
