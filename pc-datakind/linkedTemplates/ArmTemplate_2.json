@@ -690,66 +690,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SomFoodPrices_final')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "temp_somefoodprices_target",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "ds_datakindDB2",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [],
-					"scriptLines": [
-						"source(output(",
-						"          date as date,",
-						"          admin1 as string,",
-						"          admin2 as string,",
-						"          market as string,",
-						"          latitude as double,",
-						"          longitude as double,",
-						"          category as string,",
-						"          commodity as string,",
-						"          unit as string,",
-						"          priceflag as string,",
-						"          pricetype as string,",
-						"          currency as string,",
-						"          price as double,",
-						"          usdprice as double",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/SomftsReqFundingCluster_cleaning')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1811,10 +1751,16 @@
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {
-										"datasetFileName": "SomftsReqFundingCluster_copied"
+										"datasetFileName": {
+											"value": "@pipeline().parameters.datasetFileName",
+											"type": "Expression"
+										}
 									},
 									"sink1": {
-										"datasetTempName": "temp_SomftsReqFundingCluster_target"
+										"datasetTempName": {
+											"value": "@pipeline().parameters.datasetTempName",
+											"type": "Expression"
+										}
 									}
 								}
 							},
@@ -1835,6 +1781,10 @@
 					"datasetFileName": {
 						"type": "string",
 						"defaultValue": "SomftsReqFundingCluster_copied"
+					},
+					"datasetTempName": {
+						"type": "string",
+						"defaultValue": "temp_SomftsReqFundingCluster_target"
 					}
 				},
 				"folder": {
@@ -1959,47 +1909,6 @@
 							},
 							"traceLevel": "Fine"
 						}
-					},
-					{
-						"name": "Data flow2",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Data flow1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "SomFoodPrices_final",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {
-										"tempSinkFileName": "tempsomefoodprices_target"
-									},
-									"sink1": {
-										"table": "tempsomefoodprices"
-									}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
 					}
 				],
 				"policy": {
@@ -2019,8 +1928,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/SomFoodPrices_cleaning')]",
-				"[concat(variables('factoryId'), '/dataflows/SomFoodPrices_final')]"
+				"[concat(variables('factoryId'), '/dataflows/SomFoodPrices_cleaning')]"
 			]
 		}
 	]
