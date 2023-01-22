@@ -30,6 +30,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     datasetFileName as string (temp_SomftsReqFundingCluster_target)",
+				"}",
 				"source(output(",
 				"          countryCode as string,",
 				"          id as string,",
@@ -52,8 +55,10 @@
 				"     disjoint: false) ~> split1@(Null, Good)",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:[($datasetFileName)],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
 			]
 		}
 	}
