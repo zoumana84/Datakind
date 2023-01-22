@@ -30,9 +30,6 @@
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     datasetFileName as string (temp_SomftsReqFundingCluster_target)",
-				"}",
 				"source(output(",
 				"          countryCode as string,",
 				"          id as string,",
