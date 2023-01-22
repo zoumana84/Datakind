@@ -13,6 +13,100 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/KenFoodPrices')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_KenFoodPrices_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "cleandate"
+						},
+						{
+							"name": "cast1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          date as string,",
+						"          admin1 as string,",
+						"          admin2 as string,",
+						"          market as string,",
+						"          latitude as string,",
+						"          longitude as string,",
+						"          category as string,",
+						"          commodity as string,",
+						"          unit as string,",
+						"          priceflag as string,",
+						"          pricetype as string,",
+						"          currency as string,",
+						"          price as string,",
+						"          usdprice as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"cast1 split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"source1 filter(not(startsWith(date, '#'))) ~> filter1",
+						"filter1 derive(date = toDate(date)) ~> cleandate",
+						"cleandate cast(output(",
+						"          date as date,",
+						"          admin1 as string,",
+						"          admin2 as string,",
+						"          market as string,",
+						"          latitude as string,",
+						"          longitude as string,",
+						"          category as string,",
+						"          commodity as string,",
+						"          unit as string,",
+						"          priceflag as string,",
+						"          pricetype as string,",
+						"          currency as string,",
+						"          price as float,",
+						"          usdprice as float",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/KenHealthFacilities')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -656,6 +750,55 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SomftsReqFundingCluster_cleaning')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SomftsReqFundingCluster_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "temp_SomftsReqFundingCluster_target",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 filter(not(contains(array(toString(columns())), startsWith(#item, \"#\")))) ~> filter1",
+						"filter1 split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pq_KenFoodPrices')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -698,94 +841,6 @@
 					"script": "section Section1;\r\nshared ds_KenftsFundingCluster_copied = let AdfDoc = AzureStorage.BlobContents(\"https://pcoulibalystorage.blob.core.windows.net/datakind/copied/KenftsFundingCluster\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_KenftsFundingCluster_copied\",\r\n  #\"Removed top rows\" = Table.Skip(Source, 1) in #\"Removed top rows\";\r\n",
 					"documentLocale": "en-us"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pl_SomftsReqFundingCluster')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_SomftsReqFundingClusterSrc",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "SomftsReqFundingCluster_copied",
-								"type": "DatasetReference",
-								"parameters": {
-									"datasetFileName": {
-										"value": "@pipeline().parameters.datasetFileName",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"datasetFileName": {
-						"type": "string",
-						"defaultValue": "SomftsReqFundingCluster_copied"
-					}
-				},
-				"folder": {
-					"name": "Somalia"
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -1193,7 +1248,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/KenFoodPrices')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_KenHealthFacilities')]",
@@ -1656,6 +1713,137 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/KenftsReqFundingCovid')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_SomftsReqFundingCluster_copyclean')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_SomftsReqFundingClusterSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SomftsReqFundingCluster_copied",
+								"type": "DatasetReference",
+								"parameters": {
+									"datasetFileName": {
+										"value": "@pipeline().parameters.datasetFileName",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "SomftsReqFundingCluster_cleaning",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"datasetFileName": "SomftsReqFundingCluster_copied"
+									},
+									"sink1": {
+										"datasetTempName": "temp_SomftsReqFundingCluster_target"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"datasetFileName": {
+						"type": "string",
+						"defaultValue": "SomftsReqFundingCluster_copied"
+					}
+				},
+				"folder": {
+					"name": "Somalia"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/SomftsReqFundingCluster_cleaning')]"
 			]
 		},
 		{
