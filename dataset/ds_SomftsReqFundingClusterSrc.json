@@ -1,0 +1,74 @@
+{
+	"name": "ds_SomftsReqFundingClusterSrc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_humdata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Somalia/Sources"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "c48f2ae8-fd5c-48fb-bcf4-81be54e746a1/resource/e7c49922-326b-44a7-b350-1652c330a0ea/download/fts_requirements_funding_cluster_som.csv"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "countryCode",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "code",
+				"type": "String"
+			},
+			{
+				"name": "startDate",
+				"type": "String"
+			},
+			{
+				"name": "endDate",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "clusterCode",
+				"type": "String"
+			},
+			{
+				"name": "cluster",
+				"type": "String"
+			},
+			{
+				"name": "requirements",
+				"type": "String"
+			},
+			{
+				"name": "funding",
+				"type": "String"
+			},
+			{
+				"name": "percentFunded",
+				"type": "String"
+			}
+		]
+	}
+}

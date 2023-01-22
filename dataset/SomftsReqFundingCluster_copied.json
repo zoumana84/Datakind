@@ -1,0 +1,33 @@
+{
+	"name": "SomftsReqFundingCluster_copied",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_injectionsa",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"datasetFileName": {
+				"type": "string",
+				"defaultValue": "SomftsReqFundingCluster_copied"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().datasetFileName",
+					"type": "Expression"
+				},
+				"folderPath": "copied",
+				"container": "datakind"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
