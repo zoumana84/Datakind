@@ -52,7 +52,6 @@
 				"     disjoint: false) ~> split1@(Null, Good)",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:['temp_SomftsReqFundingCluster_target'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> sink1"
