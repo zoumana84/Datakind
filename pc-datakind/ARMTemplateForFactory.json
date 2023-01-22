@@ -4790,7 +4790,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "temp_SomftsReqFundingCluster_target",
+						"fileName": "temp_somftsreqfundingcluster_target",
 						"folderPath": "copied",
 						"container": "datakind"
 					},
@@ -5733,8 +5733,10 @@
 						"     disjoint: false) ~> split1@(Null, Good)",
 						"split1@Good sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     partitionFileNames:['temp_somftsreqfundingcluster_target'],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
 			},

@@ -745,8 +745,10 @@
 						"     disjoint: false) ~> split1@(Null, Good)",
 						"split1@Good sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     partitionFileNames:['temp_somftsreqfundingcluster_target'],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
 			},
