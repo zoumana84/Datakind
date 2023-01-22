@@ -13,6 +13,156 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/KenHealthFacilities')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "KenHealthFacilities_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Code as short,",
+						"          Name as string,",
+						"          Registration_number as string,",
+						"          {Keph level} as string,",
+						"          {Facility type} as string,",
+						"          Owner as string,",
+						"          {Regulatory body} as string,",
+						"          Beds as short,",
+						"          Cots as short,",
+						"          County as string,",
+						"          Constituency as string,",
+						"          {Sub county} as string,",
+						"          Ward as string,",
+						"          {Operation status} as string,",
+						"          Open_whole_day as boolean,",
+						"          Open_public_holidays as boolean,",
+						"          Open_weekends as boolean,",
+						"          Open_late_night as boolean,",
+						"          Service_names as string,",
+						"          Approved as boolean,",
+						"          {Public visible} as boolean,",
+						"          Closed as boolean",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenHealthIndicators')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "KenHealthIndicators_copied",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "split1"
+						},
+						{
+							"name": "cast1"
+						},
+						{
+							"name": "filter1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {Country Name} as string,",
+						"          {Country ISO3} as string,",
+						"          Year as string,",
+						"          {Indicator Name} as string,",
+						"          {Indicator Code} as string,",
+						"          Value as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"filter1 split(contains(array(toString(columns())), isNull(#item)),",
+						"     disjoint: false) ~> split1@(Null, Good)",
+						"split1@Good cast(output(",
+						"          {Country Name} as string,",
+						"          {Country ISO3} as string,",
+						"          Year as integer,",
+						"          {Indicator Name} as string,",
+						"          {Indicator Code} as string,",
+						"          Value as float",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"source1 filter(not(startsWith(Year, '#'))) ~> filter1",
+						"cast1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     stagingSchemaName: 'public',",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/KenftsFundingCluster')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -552,6 +702,94 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pl_SomftsReqFundingCluster')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "HttpReadSettings",
+									"requestMethod": "GET"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_SomftsReqFundingClusterSrc",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SomftsReqFundingCluster_copied",
+								"type": "DatasetReference",
+								"parameters": {
+									"datasetFileName": {
+										"value": "@pipeline().parameters.datasetFileName",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"datasetFileName": {
+						"type": "string",
+						"defaultValue": "SomftsReqFundingCluster_copied"
+					}
+				},
+				"folder": {
+					"name": "Somalia"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Main_KenftsFunding')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1077,7 +1315,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/KenHealthFacilities')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_KenHealthIndicators')]",
@@ -1287,7 +1527,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/KenHealthIndicators')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pl_KenftsReqFundingCovid')]",
