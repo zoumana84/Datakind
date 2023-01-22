@@ -127,18 +127,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "SomFoodPrices_final",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"source1": {
-								"tempSinkFileName": "tempsomefoodprices_target"
-							},
-							"sink1": {
-								"table": "tempsomefoodprices"
-							}
-						}
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
