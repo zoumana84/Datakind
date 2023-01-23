@@ -77,10 +77,12 @@
 				},
 				"parameters": {
 					"Container": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "datakind"
 					},
 					"Directory": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "pqtarget"
 					}
 				},
 				"annotations": [],
@@ -153,10 +155,12 @@
 				},
 				"parameters": {
 					"Container": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "datakind"
 					},
 					"Directory": {
-						"type": "string"
+						"type": "string",
+						"defaultValue": "copied"
 					}
 				},
 				"annotations": [],
