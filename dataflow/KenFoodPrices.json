@@ -1,6 +1,9 @@
 {
 	"name": "KenFoodPrices",
 	"properties": {
+		"folder": {
+			"name": "Kenya"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [

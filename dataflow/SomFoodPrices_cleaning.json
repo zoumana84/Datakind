@@ -1,6 +1,9 @@
 {
 	"name": "SomFoodPrices_cleaning",
 	"properties": {
+		"folder": {
+			"name": "Somalia"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [

@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "pl_SomftsReqFundingCluster_final",
+						"referenceName": "SomftsReqFundingCluster_final",
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"source1": {

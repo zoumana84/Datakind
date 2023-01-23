@@ -1,6 +1,9 @@
 {
 	"name": "KenftsFundingCluster",
 	"properties": {
+		"folder": {
+			"name": "Kenya"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [

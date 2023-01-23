@@ -1,6 +1,9 @@
 {
-	"name": "pl_SomftsReqFundingCluster_final",
+	"name": "SomftsReqFundingCluster_final",
 	"properties": {
+		"folder": {
+			"name": "Somalia"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
