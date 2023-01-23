@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"name": "ds_KenFoodPrices_copied",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  ds_KenFoodPrices_copied",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_KenFoodPrices_copied",
 					"dataset": {
 						"referenceName": "ds_KenFoodPrices_copied",
 						"type": "DatasetReference"

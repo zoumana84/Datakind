@@ -225,7 +225,13 @@
 				"outputs": [
 					{
 						"referenceName": "ds_KenFoodPrices_copied",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"datasetFileName": {
+								"value": "@pipeline().parameters.datasetFileName",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
@@ -253,6 +259,9 @@
 						"referenceName": "KenFoodPrices",
 						"type": "DataFlowReference",
 						"datasetParameters": {
+							"source1": {
+								"datasetFileName": "KenFoodPrices_copied"
+							},
 							"sink1": {
 								"tableName": "kenfoodprices"
 							}
@@ -266,6 +275,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"datasetFileName": {
+				"type": "string",
+				"defaultValue": "KenFoodPrices_copied"
+			}
+		},
 		"folder": {
 			"name": "Kenya"
 		},

@@ -11,6 +11,9 @@
 				"defaultValue": "SomFoodPricesMonthly_copied"
 			}
 		},
+		"folder": {
+			"name": "Somalia/copied"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

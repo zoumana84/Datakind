@@ -5,6 +5,9 @@
 			"referenceName": "ls_injectionsa",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "test datasets"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
