@@ -432,7 +432,12 @@
 							{
 								"referenceName": "ds_KenFoodPrices_copied",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"datasetFileName": {
+										"value": "@pipeline().parameters.datasetFileName",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					},
@@ -461,7 +466,9 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"source1": {},
+									"source1": {
+										"datasetFileName": "KenFoodPrices_copied"
+									},
 									"sink1": {
 										"tableName": "kenfoodprices"
 									}
@@ -479,6 +486,12 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"datasetFileName": {
+						"type": "string",
+						"defaultValue": "KenFoodPrices_copied"
+					}
 				},
 				"folder": {
 					"name": "Kenya"
@@ -2404,6 +2417,47 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "SomFoodPrices_cleaning",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"datasetFileName": "SomFoodPrices_copied"
+									},
+									"sink1": {
+										"tempSinkFileName": "tempsomefoodprices_target"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -2417,7 +2471,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_SomFoodPricesSrc')]",
-				"[concat(variables('factoryId'), '/datasets/ds_SomFoodPrices_copied')]"
+				"[concat(variables('factoryId'), '/datasets/ds_SomFoodPrices_copied')]",
+				"[concat(variables('factoryId'), '/dataflows/SomFoodPrices_cleaning')]"
 			]
 		},
 		{
@@ -3425,6 +3480,12 @@
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"datasetFileName": {
+						"type": "string",
+						"defaultValue": "KenFoodPrices_copied"
+					}
+				},
 				"folder": {
 					"name": "Kenya/Copy_target"
 				},
@@ -3433,7 +3494,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "KenFoodPrice",
+						"fileName": {
+							"value": "@dataset().datasetFileName",
+							"type": "Expression"
+						},
 						"folderPath": "copied",
 						"container": "datakind"
 					},
@@ -3513,6 +3577,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "test datasets"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -4012,6 +4079,9 @@
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "test datasets"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -4472,6 +4542,9 @@
 						"defaultValue": "SomFoodPricesMonthly_copied"
 					}
 				},
+				"folder": {
+					"name": "Somalia/copied"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -4631,6 +4704,9 @@
 						"type": "string",
 						"defaultValue": "SomFoodPrices_copied"
 					}
+				},
+				"folder": {
+					"name": "Somalia/copied"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
