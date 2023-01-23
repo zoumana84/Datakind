@@ -66,6 +66,158 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataDestinationStore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to your data destination store.  ",
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataDestinationStore1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to your data destination store.  ",
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataSourceStore')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to your data source store. ",
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BinaryDataSourceStore1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to your data source store. ",
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/KenHealthFacilities_copied')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1237,376 +1389,6 @@
 					},
 					{
 						"name": "percentFunded",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_humdata')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_KenftsFundingCluster_copied')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_injectionsa",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Kenya/Copy_target"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "KenftsFundingCluster",
-						"folderPath": "copied",
-						"container": "datakind"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "countryCode",
-						"type": "String"
-					},
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "code",
-						"type": "String"
-					},
-					{
-						"name": "startDate",
-						"type": "String"
-					},
-					{
-						"name": "endDate",
-						"type": "String"
-					},
-					{
-						"name": "year",
-						"type": "String"
-					},
-					{
-						"name": "clusterCode",
-						"type": "String"
-					},
-					{
-						"name": "cluster",
-						"type": "String"
-					},
-					{
-						"name": "requirements",
-						"type": "String"
-					},
-					{
-						"name": "funding",
-						"type": "String"
-					},
-					{
-						"name": "percentFunded",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_KenftsFundingCluster_pqtarget')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_injectionsa",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "test datasets"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "pqtarget",
-						"container": "datakind"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_KenftsFundingGlobalClusterSrc')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_humdata",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Kenya/Sources"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "HttpServerLocation",
-						"relativeUrl": "d0bf93aa-bc16-426b-b53b-c8c90fac98a4/resource/b6136d9e-24a4-4864-adbc-adef30e62516/download/fts_requirements_funding_globalcluster_ken.csv"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "countryCode",
-						"type": "String"
-					},
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "name",
-						"type": "String"
-					},
-					{
-						"name": "code",
-						"type": "String"
-					},
-					{
-						"name": "startDate",
-						"type": "String"
-					},
-					{
-						"name": "endDate",
-						"type": "String"
-					},
-					{
-						"name": "year",
-						"type": "String"
-					},
-					{
-						"name": "clusterCode",
-						"type": "String"
-					},
-					{
-						"name": "cluster",
-						"type": "String"
-					},
-					{
-						"name": "requirements",
-						"type": "String"
-					},
-					{
-						"name": "funding",
-						"type": "String"
-					},
-					{
-						"name": "percentFunded",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_humdata')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_KenftsIncomingFundingSrc')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_humdata",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Kenya/Sources"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "HttpServerLocation",
-						"relativeUrl": "d0bf93aa-bc16-426b-b53b-c8c90fac98a4/resource/da2fbb4e-126c-4c98-9cdc-f74f953f96d7/download/fts_incoming_funding_ken.csv"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "date",
-						"type": "String"
-					},
-					{
-						"name": "budgetYear",
-						"type": "String"
-					},
-					{
-						"name": "description",
-						"type": "String"
-					},
-					{
-						"name": "amountUSD",
-						"type": "String"
-					},
-					{
-						"name": "srcOrganization",
-						"type": "String"
-					},
-					{
-						"name": "srcOrganizationTypes",
-						"type": "String"
-					},
-					{
-						"name": "srcLocations",
-						"type": "String"
-					},
-					{
-						"name": "srcUsageYearStart",
-						"type": "String"
-					},
-					{
-						"name": "srcUsageYearEnd",
-						"type": "String"
-					},
-					{
-						"name": "destPlan",
-						"type": "String"
-					},
-					{
-						"name": "destPlanCode",
-						"type": "String"
-					},
-					{
-						"name": "destPlanId",
-						"type": "String"
-					},
-					{
-						"name": "destOrganization",
-						"type": "String"
-					},
-					{
-						"name": "destOrganizationTypes",
-						"type": "String"
-					},
-					{
-						"name": "destGlobalClusters",
-						"type": "String"
-					},
-					{
-						"name": "destLocations",
-						"type": "String"
-					},
-					{
-						"name": "destProject",
-						"type": "String"
-					},
-					{
-						"name": "destProjectCode",
-						"type": "String"
-					},
-					{
-						"name": "destEmergency",
-						"type": "String"
-					},
-					{
-						"name": "destUsageYearStart",
-						"type": "String"
-					},
-					{
-						"name": "destUsageYearEnd",
-						"type": "String"
-					},
-					{
-						"name": "contributionType",
-						"type": "String"
-					},
-					{
-						"name": "flowType",
-						"type": "String"
-					},
-					{
-						"name": "method",
-						"type": "String"
-					},
-					{
-						"name": "boundary",
-						"type": "String"
-					},
-					{
-						"name": "onBoundary",
-						"type": "String"
-					},
-					{
-						"name": "status",
-						"type": "String"
-					},
-					{
-						"name": "firstReportedDate",
-						"type": "String"
-					},
-					{
-						"name": "decisionDate",
-						"type": "String"
-					},
-					{
-						"name": "keywords",
-						"type": "String"
-					},
-					{
-						"name": "originalAmount",
-						"type": "String"
-					},
-					{
-						"name": "originalCurrency",
-						"type": "String"
-					},
-					{
-						"name": "exchangeRate",
-						"type": "String"
-					},
-					{
-						"name": "id",
-						"type": "String"
-					},
-					{
-						"name": "refCode",
-						"type": "String"
-					},
-					{
-						"name": "createdAt",
-						"type": "String"
-					},
-					{
-						"name": "updatedAt",
 						"type": "String"
 					}
 				]
