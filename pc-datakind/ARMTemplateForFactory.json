@@ -5520,7 +5520,7 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"fileName": "temp_KenftsFundingCluster_target",
-						"folderPath": "temp",
+						"folderPath": "copied",
 						"container": "datakind"
 					},
 					"columnDelimiter": ",",
