@@ -55,13 +55,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "KenftsFundingCluster",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"sink1": {
-								"tableName": "kenftsfunding"
-							}
-						}
+						"referenceName": "KenftsFundingClusterMerged_cleaning",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,

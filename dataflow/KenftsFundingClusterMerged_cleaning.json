@@ -1,5 +1,5 @@
 {
-	"name": "KenftsFundingCluster",
+	"name": "KenftsFundingClusterMerged_cleaning",
 	"properties": {
 		"folder": {
 			"name": "Kenya"
@@ -25,7 +25,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_datakindDB",
+						"referenceName": "temp_KenftsFundingCluster_target",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -37,9 +37,6 @@
 				},
 				{
 					"name": "filter1"
-				},
-				{
-					"name": "types"
 				},
 				{
 					"name": "join1"
@@ -80,16 +77,9 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source2",
-				"types split(contains(array(toString(columns())), isNull(#item)),",
+				"filter1 split(contains(array(toString(columns())), isNull(#item)),",
 				"     disjoint: false) ~> split1@(Null, Good)",
-				"join1 filter(not(startsWith(source1@countryCode, '#'))) ~> filter1",
-				"filter1 derive(id = toInteger(source1@id),",
-				"          startDate = toDate(source1@startDate),",
-				"          endDate = toDate(source1@endDate),",
-				"          year = toInteger(source1@year),",
-				"          funding = toFloat(source1@funding),",
-				"          percentFunded = toFloat(source1@percentFunded),",
-				"          clusterCode = toInteger(source1@clusterCode)) ~> types",
+				"join1 filter(not(contains(array(toString(columns())), startsWith(#item, \"#\")))) ~> filter1",
 				"source1, source2 join(source1@countryCode == source2@countryCode,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -97,13 +87,11 @@
 				"     broadcast: 'auto')~> join1",
 				"split1@Good sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
+				"     partitionFileNames:['temp_KenftsFundingCluster_target'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1),",
+				"     format: 'table') ~> sink1"
 			]
 		}
 	}
