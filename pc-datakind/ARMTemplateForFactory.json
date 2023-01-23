@@ -347,15 +347,13 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "KenftsFundingCluster",
+								"referenceName": "KenftsFundingClusterMerged_cleaning",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {},
 									"source2": {},
-									"sink1": {
-										"tableName": "kenftsfunding"
-									}
+									"sink1": {}
 								}
 							},
 							"staging": {},
@@ -376,7 +374,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/pl_KenftsFundingCluster')]",
 				"[concat(variables('factoryId'), '/pipelines/pl_KenftsFundingClusterGlobal')]",
-				"[concat(variables('factoryId'), '/dataflows/KenftsFundingCluster')]"
+				"[concat(variables('factoryId'), '/dataflows/KenftsFundingClusterMerged_cleaning')]"
 			]
 		},
 		{
@@ -5508,6 +5506,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/temp_KenftsFundingCluster_target')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_injectionsa",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "temp_KenftsFundingCluster_target",
+						"folderPath": "temp",
+						"container": "datakind"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_injectionsa')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/temp_SomftsReqFundingCluster_target')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -6024,7 +6051,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/KenftsFundingCluster')]",
+			"name": "[concat(parameters('factoryName'), '/KenftsFundingClusterMerged_cleaning')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -6052,7 +6079,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "ds_datakindDB",
+								"referenceName": "temp_KenftsFundingCluster_target",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -6064,9 +6091,6 @@
 						},
 						{
 							"name": "filter1"
-						},
-						{
-							"name": "types"
 						},
 						{
 							"name": "join1"
@@ -6107,22 +6131,64 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source2",
-						"types split(contains(array(toString(columns())), isNull(#item)),",
+						"filter1 split(contains(array(toString(columns())), isNull(#item)),",
 						"     disjoint: false) ~> split1@(Null, Good)",
-						"join1 filter(not(startsWith(source1@countryCode, '#'))) ~> filter1",
-						"filter1 derive(id = toInteger(source1@id),",
-						"          startDate = toDate(source1@startDate),",
-						"          endDate = toDate(source1@endDate),",
-						"          year = toInteger(source1@year),",
-						"          funding = toFloat(source1@funding),",
-						"          percentFunded = toFloat(source1@percentFunded),",
-						"          clusterCode = toInteger(source1@clusterCode)) ~> types",
+						"join1 filter(not(contains(array(toString(columns())), startsWith(#item, \"#\")))) ~> filter1",
 						"source1, source2 join(source1@countryCode == source2@countryCode,",
 						"     joinType:'inner',",
 						"     matchType:'exact',",
 						"     ignoreSpaces: false,",
 						"     broadcast: 'auto')~> join1",
 						"split1@Good sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['temp_KenftsFundingCluster_target'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1),",
+						"     format: 'table') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]",
+				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingClusterGlobal_copied')]",
+				"[concat(variables('factoryId'), '/datasets/temp_KenftsFundingCluster_target')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/KenftsFundingClusterMerged_final')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Kenya"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "temp_KenftsFundingCluster_target",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_datakindDB2",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -6135,9 +6201,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]",
-				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingClusterGlobal_copied')]",
-				"[concat(variables('factoryId'), '/datasets/ds_datakindDB')]"
+				"[concat(variables('factoryId'), '/datasets/temp_KenftsFundingCluster_target')]",
+				"[concat(variables('factoryId'), '/datasets/ds_datakindDB2')]"
 			]
 		},
 		{
