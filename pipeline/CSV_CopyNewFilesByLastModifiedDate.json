@@ -1,5 +1,5 @@
 {
-	"name": "Binary_CopyNewFilesByLastModifiedDate",
+	"name": "CSV_CopyNewFilesByLastModifiedDate",
 	"properties": {
 		"description": "Copy new and changed files only by using LastModifiedDate",
 		"activities": [
@@ -18,7 +18,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "BinarySource",
+						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
@@ -30,34 +30,40 @@
 								"value": "@{pipeline().parameters.LastModified_To}",
 								"type": "Expression"
 							},
-							"wildcardFileName": {
-								"value": "*",
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.Directory_Source",
 								"type": "Expression"
-							}
+							},
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.datasetFileName",
+								"type": "Expression"
+							},
+							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings"
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
-						"type": "BinarySink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
-						"referenceName": "BinaryDataSourceStore1",
+						"referenceName": "ds_SomFoodPrices_copied",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": {
-								"value": "@pipeline().parameters.FolderPath_Source",
-								"type": "Expression"
-							},
-							"Directory": {
-								"value": "@pipeline().parameters.Directory_Source",
+							"datasetFileName": {
+								"value": "@pipeline().parameters.datasetFileName",
 								"type": "Expression"
 							}
 						}
@@ -65,9 +71,13 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "BinaryDataDestinationStore1",
+						"referenceName": "ds_SomFoodPrices_Modified",
 						"type": "DatasetReference",
 						"parameters": {
+							"datasetFileName": {
+								"value": "@pipeline().parameters.sinkdatasetFileName",
+								"type": "Expression"
+							},
 							"Container": {
 								"value": "@pipeline().parameters.FolderPath_Destination",
 								"type": "Expression"
@@ -105,6 +115,14 @@
 			"LastModified_To": {
 				"type": "String",
 				"defaultValue": "2023-01-25T00:00:00Z"
+			},
+			"datasetFileName": {
+				"type": "string",
+				"defaultValue": "SomFoodPrices_copied"
+			},
+			"sinkdatasetFileName": {
+				"type": "string",
+				"defaultValue": "ds_SomFoodPrices_Modified"
 			}
 		},
 		"annotations": []
