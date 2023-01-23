@@ -1,0 +1,59 @@
+{
+	"name": "pl_SomFoodPrices_final",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SomFoodPrices_final",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"tempSinkFileName": {
+									"value": "@pipeline().parameters.tempSinkFileName",
+									"type": "Expression"
+								}
+							},
+							"sink1": {
+								"table": {
+									"value": "@pipeline().parameters.tableName",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"tempSinkFileName": {
+				"type": "string",
+				"defaultValue": "tempsomefoodprices_target"
+			},
+			"tableName": {
+				"type": "string",
+				"defaultValue": "somfoodprices"
+			}
+		},
+		"folder": {
+			"name": "Somalia"
+		},
+		"annotations": []
+	}
+}
