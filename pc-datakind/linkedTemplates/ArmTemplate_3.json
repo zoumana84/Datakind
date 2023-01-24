@@ -47,7 +47,7 @@
 						}
 					},
 					{
-						"name": "Data flow1",
+						"name": "Clean",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [
 							{
@@ -96,11 +96,11 @@
 						}
 					},
 					{
-						"name": "Data flow2",
+						"name": "Store in DB",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [
 							{
-								"activity": "Data flow1",
+								"activity": "Clean",
 								"dependencyConditions": [
 									"Succeeded"
 								]
