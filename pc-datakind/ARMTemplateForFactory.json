@@ -447,7 +447,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute Pipeline1",
+						"name": "Clean",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"userProperties": [],
@@ -461,11 +461,11 @@
 						}
 					},
 					{
-						"name": "Execute Pipeline2",
+						"name": "Store in DB",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Execute Pipeline1",
+								"activity": "Clean",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -500,7 +500,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute Pipeline1",
+						"name": "Clean",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"userProperties": [],
@@ -514,11 +514,11 @@
 						}
 					},
 					{
-						"name": "Execute Pipeline2",
+						"name": "Store in DB",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Execute Pipeline1",
+								"activity": "Clean",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -3058,10 +3058,16 @@
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {
-										"datasetTempName": "temp_SomftsReqFundingCluster_target"
+										"datasetTempName": {
+											"value": "@pipeline().parameters.datasetTempName",
+											"type": "Expression"
+										}
 									},
 									"sink1": {
-										"table": "somftsreqfundingcluster"
+										"table": {
+											"value": "@pipeline().parameters.table",
+											"type": "Expression"
+										}
 									}
 								}
 							},
@@ -3077,6 +3083,16 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"datasetTempName": {
+						"type": "string",
+						"defaultValue": "temp_SomftsReqFundingCluster_target"
+					},
+					"table": {
+						"type": "string",
+						"defaultValue": "somftsreqfundingcluster"
+					}
 				},
 				"folder": {
 					"name": "Somalia"
@@ -5543,6 +5559,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_datakindDB3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_datakindpostgres",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"table": {
+						"type": "string",
+						"defaultValue": "datakind"
+					}
+				},
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "public",
+					"table": {
+						"value": "@dataset().table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_datakindpostgres')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/som_food_price_testsource')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -6794,7 +6840,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "ds_datakindDB2",
+								"referenceName": "ds_datakindDB3",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -6833,7 +6879,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/temp_SomftsReqFundingCluster_target')]",
-				"[concat(variables('factoryId'), '/datasets/ds_datakindDB2')]"
+				"[concat(variables('factoryId'), '/datasets/ds_datakindDB3')]"
 			]
 		},
 		{

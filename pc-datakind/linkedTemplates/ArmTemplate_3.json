@@ -13,6 +13,29 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/pq_KenftsFundingCluster')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "ds_KenftsFundingCluster_copied",
+							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> ds_KenftsFundingCluster_copied",
+							"dataset": {
+								"referenceName": "ds_KenftsFundingCluster_copied",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"script": "section Section1;\r\nshared ds_KenftsFundingCluster_copied = let AdfDoc = AzureStorage.BlobContents(\"https://pcoulibalystorage.blob.core.windows.net/datakind/copied/KenftsFundingCluster\"),Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]), PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true]) in  PromotedHeaders;\r\nshared UserQuery = let Source = #\"ds_KenftsFundingCluster_copied\",\r\n  #\"Removed top rows\" = Table.Skip(Source, 1) in #\"Removed top rows\";\r\n",
+					"documentLocale": "en-us"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Main_KenftsFunding')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1269,10 +1292,16 @@
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {
-										"datasetTempName": "temp_SomftsReqFundingCluster_target"
+										"datasetTempName": {
+											"value": "@pipeline().parameters.datasetTempName",
+											"type": "Expression"
+										}
 									},
 									"sink1": {
-										"table": "somftsreqfundingcluster"
+										"table": {
+											"value": "@pipeline().parameters.table",
+											"type": "Expression"
+										}
 									}
 								}
 							},
@@ -1288,6 +1317,16 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"datasetTempName": {
+						"type": "string",
+						"defaultValue": "temp_SomftsReqFundingCluster_target"
+					},
+					"table": {
+						"type": "string",
+						"defaultValue": "somftsreqfundingcluster"
+					}
 				},
 				"folder": {
 					"name": "Somalia"
@@ -1436,7 +1475,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute Pipeline1",
+						"name": "Clean",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"userProperties": [],
@@ -1450,11 +1489,11 @@
 						}
 					},
 					{
-						"name": "Execute Pipeline2",
+						"name": "Store in DB",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Execute Pipeline1",
+								"activity": "Clean",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1489,7 +1528,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute Pipeline1",
+						"name": "Clean",
 						"type": "ExecutePipeline",
 						"dependsOn": [],
 						"userProperties": [],
@@ -1503,11 +1542,11 @@
 						}
 					},
 					{
-						"name": "Execute Pipeline2",
+						"name": "Store in DB",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Execute Pipeline1",
+								"activity": "Clean",
 								"dependencyConditions": [
 									"Succeeded"
 								]
