@@ -6161,8 +6161,7 @@
 						"     partitionFileNames:['temp_KenftsFundingCluster_target'],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1),",
-						"     format: 'table') ~> sink1"
+						"     partitionBy('hash', 1)) ~> sink1"
 					]
 				}
 			},
