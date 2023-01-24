@@ -59,7 +59,10 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"sink1": {
-								"tempSinkFileName": "KenftsFundingCluster_target"
+								"tempSinkFileName": {
+									"value": "@pipeline().parameters.tempSinkFileName",
+									"type": "Expression"
+								}
 							}
 						}
 					},
