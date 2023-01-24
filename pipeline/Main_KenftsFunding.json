@@ -56,7 +56,12 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "KenftsFundingClusterMerged_cleaning",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"sink1": {
+								"tempSinkFileName": "KenftsFundingCluster_target"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
@@ -66,6 +71,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"tempSinkFileName": {
+				"type": "string",
+				"defaultValue": "temp_KenftsFundingCluster_target"
+			}
+		},
 		"annotations": []
 	}
 }
