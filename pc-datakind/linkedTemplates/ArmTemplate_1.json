@@ -999,6 +999,12 @@
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"tempSinkFileName": {
+						"type": "string",
+						"defaultValue": "temp_KenftsFundingCluster_target"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {

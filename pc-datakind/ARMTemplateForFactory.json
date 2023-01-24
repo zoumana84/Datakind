@@ -353,7 +353,9 @@
 								"datasetParameters": {
 									"source1": {},
 									"source2": {},
-									"sink1": {}
+									"sink1": {
+										"tempSinkFileName": "KenftsFundingCluster_target"
+									}
 								}
 							},
 							"staging": {},
@@ -368,6 +370,12 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"tempSinkFileName": {
+						"type": "string",
+						"defaultValue": "temp_KenftsFundingCluster_target"
+					}
 				},
 				"annotations": []
 			},
@@ -5513,6 +5521,12 @@
 				"linkedServiceName": {
 					"referenceName": "ls_injectionsa",
 					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"tempSinkFileName": {
+						"type": "string",
+						"defaultValue": "temp_KenftsFundingCluster_target"
+					}
 				},
 				"annotations": [],
 				"type": "DelimitedText",
