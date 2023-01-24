@@ -20,10 +20,16 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"source1": {
-								"datasetTempName": "temp_SomftsReqFundingCluster_target"
+								"datasetTempName": {
+									"value": "@pipeline().parameters.datasetTempName",
+									"type": "Expression"
+								}
 							},
 							"sink1": {
-								"table": "somftsreqfundingcluster"
+								"table": {
+									"value": "@pipeline().parameters.table",
+									"type": "Expression"
+								}
 							}
 						}
 					},
@@ -35,6 +41,16 @@
 				}
 			}
 		],
+		"parameters": {
+			"datasetTempName": {
+				"type": "string",
+				"defaultValue": "temp_SomftsReqFundingCluster_target"
+			},
+			"table": {
+				"type": "string",
+				"defaultValue": "somftsreqfundingcluster"
+			}
+		},
 		"folder": {
 			"name": "Somalia"
 		},

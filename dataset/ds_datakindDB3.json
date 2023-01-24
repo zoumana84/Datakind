@@ -1,0 +1,25 @@
+{
+	"name": "ds_datakindDB3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_datakindpostgres",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"table": {
+				"type": "string",
+				"defaultValue": "datakind"
+			}
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": {
+				"value": "@dataset().table",
+				"type": "Expression"
+			}
+		}
+	}
+}

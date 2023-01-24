@@ -18,7 +18,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_datakindDB2",
+						"referenceName": "ds_datakindDB3",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
