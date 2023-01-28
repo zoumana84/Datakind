@@ -1,0 +1,14 @@
+{
+	"name": "Cleaning",
+	"properties": {
+		"type": "UDFLibrary",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"clean_hashtags() as boolean = not(contains(array(toString(columns())), startsWith(#item, \"#\")))"
+			]
+		}
+	}
+}
