@@ -32,6 +32,12 @@
 					"name": "split1"
 				}
 			],
+			"udfLibraries": [
+				{
+					"referenceName": "Cleaning",
+					"type": "DataFlowReference"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          date as string,",
@@ -52,7 +58,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 filter(not(contains(array(toString(columns())), startsWith(#item, \"#\")))) ~> filter1",
+				"source1 filter(clean_hashtags()) ~> filter1",
 				"filter1 split(contains(array(toString(columns())), isNull(#item)),",
 				"     disjoint: false) ~> split1@(Null, Good)",
 				"split1@Good sink(allowSchemaDrift: true,",
