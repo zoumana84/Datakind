@@ -1,0 +1,12 @@
+{
+	"name": "AppInsight",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://api.applicationinsights.io/v1/apps/c725301f-3b69-4783-80ea-8c2d52da7e82/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
