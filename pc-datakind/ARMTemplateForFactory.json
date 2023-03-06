@@ -15,9 +15,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_injectionsa'"
 		},
+		"ls_appinsight_json_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_appinsight_json'"
+		},
+		"AppInsight_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.applicationinsights.io/v1/apps/c725301f-3b69-4783-80ea-8c2d52da7e82/"
+		},
 		"ls_humdata_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://data.humdata.org/dataset/"
+		},
+		"ls_appinsight_json_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://pcoulibalystorage.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -5912,6 +5924,21 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AppInsight')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('AppInsight_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_datakindpostgres')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -5948,6 +5975,23 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('ls_injectionsa_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Cleaning')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "UDFLibrary",
+				"typeProperties": {
+					"sources": [],
+					"sinks": [],
+					"transformations": [],
+					"scriptLines": [
+						"clean_hashtags() as boolean = not(contains(array(toString(columns())), startsWith(#item, \"#\")))"
+					]
 				}
 			},
 			"dependsOn": []
@@ -6614,6 +6658,12 @@
 							"name": "split1"
 						}
 					],
+					"udfLibraries": [
+						{
+							"referenceName": "Cleaning",
+							"type": "DataFlowReference"
+						}
+					],
 					"scriptLines": [
 						"source(output(",
 						"          date as string,",
@@ -6634,7 +6684,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 filter(not(contains(array(toString(columns())), startsWith(#item, \"#\")))) ~> filter1",
+						"source1 filter(clean_hashtags()) ~> filter1",
 						"filter1 split(contains(array(toString(columns())), isNull(#item)),",
 						"     disjoint: false) ~> split1@(Null, Good)",
 						"split1@Good sink(allowSchemaDrift: true,",
@@ -6663,6 +6713,7 @@
 				}
 			},
 			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Cleaning')]",
 				"[concat(variables('factoryId'), '/datasets/ds_SomFoodPrices_copied')]",
 				"[concat(variables('factoryId'), '/datasets/temp_somefoodprices_target')]"
 			]
@@ -6930,6 +6981,171 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_KenftsFundingCluster_copied')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_appinsight')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AppInsight",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "query"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AppInsight')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_appinsight')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "POST",
+								"requestBody": "{\n  \"query\": \" customEvents\",\n  \"timespan\": \"PT12H\"\n}",
+								"additionalHeaders": {
+									"x-api-Key": "qtsnzv002kucnn85lze2vpftnyhov7vw6m40eu2n",
+									"content-type": "application/json; charset=utf-8"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$[0]"
+										},
+										"sink": {
+											"path": "$['timestamp']"
+										}
+									},
+									{
+										"source": {
+											"path": "$[1]"
+										},
+										"sink": {
+											"path": "$['name']"
+										}
+									},
+									{
+										"source": {
+											"path": "$[2]"
+										},
+										"sink": {
+											"path": "$['itemType']"
+										}
+									},
+									{
+										"source": {
+											"path": "$[3]"
+										},
+										"sink": {
+											"path": "$['customDimensions']"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_appinsight",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Json1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_appinsight')]",
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_appinsight_json')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_appinsight_json_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_appinsight_json_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_appinsight_json",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "population"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_appinsight_json')]"
 			]
 		}
 	]

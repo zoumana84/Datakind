@@ -11,8 +11,17 @@
 		"ls_injectionsa_connectionString": {
 			"value": ""
 		},
+		"ls_appinsight_json_accountKey": {
+			"value": ""
+		},
+		"AppInsight_properties_typeProperties_url": {
+			"value": "https://api.applicationinsights.io/v1/apps/c725301f-3b69-4783-80ea-8c2d52da7e82/"
+		},
 		"ls_humdata_properties_typeProperties_url": {
 			"value": "https://data.humdata.org/dataset/"
+		},
+		"ls_appinsight_json_properties_typeProperties_url": {
+			"value": "https://pcoulibalystorage.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"value": ""
