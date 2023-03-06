@@ -15,8 +15,77 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "POST",
+						"requestBody": "{\n  \"query\": \" customEvents\",\n  \"timespan\": \"PT12H\"\n}",
+						"additionalHeaders": {
+							"x-api-Key": "qtsnzv002kucnn85lze2vpftnyhov7vw6m40eu2n",
+							"content-type": "application/json; charset=utf-8"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$[0]"
+								},
+								"sink": {
+									"path": "$['timestamp']"
+								}
+							},
+							{
+								"source": {
+									"path": "$[1]"
+								},
+								"sink": {
+									"path": "$['name']"
+								}
+							},
+							{
+								"source": {
+									"path": "$[2]"
+								},
+								"sink": {
+									"path": "$['itemType']"
+								}
+							},
+							{
+								"source": {
+									"path": "$[3]"
+								},
+								"sink": {
+									"path": "$['customDimensions']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_appinsight",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
