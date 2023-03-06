@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "pc-datakind"
 		},
+		"ls_appinsight_json_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_appinsight_json'"
+		},
 		"ls_datakindpostgres_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_datakindpostgres'"
@@ -15,21 +19,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_injectionsa'"
 		},
-		"ls_appinsight_json_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ls_appinsight_json'"
-		},
 		"AppInsight_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.applicationinsights.io/v1/apps/c725301f-3b69-4783-80ea-8c2d52da7e82/"
 		},
-		"ls_humdata_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://data.humdata.org/dataset/"
-		},
 		"ls_appinsight_json_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://pcoulibalystorage.dfs.core.windows.net/"
+		},
+		"ls_humdata_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.humdata.org/dataset/"
 		},
 		"containerUri": {
 			"type": "string",
@@ -58,23 +58,23 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"ls_appinsight_json_accountKey": {
+						"value": "[parameters('ls_appinsight_json_accountKey')]"
+					},
 					"ls_datakindpostgres_connectionString": {
 						"value": "[parameters('ls_datakindpostgres_connectionString')]"
 					},
 					"ls_injectionsa_connectionString": {
 						"value": "[parameters('ls_injectionsa_connectionString')]"
 					},
-					"ls_appinsight_json_accountKey": {
-						"value": "[parameters('ls_appinsight_json_accountKey')]"
-					},
 					"AppInsight_properties_typeProperties_url": {
 						"value": "[parameters('AppInsight_properties_typeProperties_url')]"
 					},
-					"ls_humdata_properties_typeProperties_url": {
-						"value": "[parameters('ls_humdata_properties_typeProperties_url')]"
-					},
 					"ls_appinsight_json_properties_typeProperties_url": {
 						"value": "[parameters('ls_appinsight_json_properties_typeProperties_url')]"
+					},
+					"ls_humdata_properties_typeProperties_url": {
+						"value": "[parameters('ls_humdata_properties_typeProperties_url')]"
 					}
 				}
 			},
