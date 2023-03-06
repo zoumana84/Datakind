@@ -1966,7 +1966,7 @@
 								"httpRequestTimeout": "00:01:40",
 								"requestInterval": "00.00:00:00.010",
 								"requestMethod": "POST",
-								"requestBody": "{\n  \"query\": \" customEvents\",\n  \"timespan\": \"PT12H\"\n}",
+								"requestBody": "{\n  \"query\": \" customEvents | project timestamp, session_Id, customDimensions\",\n  \"timespan\": \"PT12H\"\n}",
 								"additionalHeaders": {
 									"x-api-Key": "qtsnzv002kucnn85lze2vpftnyhov7vw6m40eu2n",
 									"content-type": "application/json; charset=utf-8"
@@ -1981,7 +1981,37 @@
 									"type": "JsonWriteSettings"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$[0]"
+										},
+										"sink": {
+											"path": "$['timestamp']"
+										}
+									},
+									{
+										"source": {
+											"path": "$[1]"
+										},
+										"sink": {
+											"path": "$['session_id']"
+										}
+									},
+									{
+										"source": {
+											"path": "$[2]"
+										},
+										"sink": {
+											"path": "$['customDimensions']"
+										}
+									}
+								],
+								"collectionReference": "$['tables'][0]['rows']"
+							}
 						},
 						"inputs": [
 							{
