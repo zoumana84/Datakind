@@ -41,34 +41,22 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$[0]"
-								},
-								"sink": {
-									"path": "$['timestamp']"
+									"path": "$['tables'][0]['name']"
 								}
 							},
 							{
 								"source": {
-									"path": "$[1]"
-								},
-								"sink": {
-									"path": "$['name']"
+									"path": "$['tables'][0]['columns'][0]['name']"
 								}
 							},
 							{
 								"source": {
-									"path": "$[2]"
-								},
-								"sink": {
-									"path": "$['itemType']"
+									"path": "$['tables'][0]['columns'][0]['type']"
 								}
 							},
 							{
 								"source": {
-									"path": "$[3]"
-								},
-								"sink": {
-									"path": "$['customDimensions']"
+									"path": "$['tables'][0]['rows'][0][0]"
 								}
 							}
 						]
